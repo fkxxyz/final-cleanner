@@ -1,38 +1,46 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ScanRoot {
-  final String path;
-  final bool isEnabled;
+import '../../data/database.dart';
+import '../../providers/providers.dart';
 
-  const ScanRoot({required this.path, required this.isEnabled});
-}
-
-class SettingsPage extends ConsumerWidget {
+class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final mockScanRoots = [
-      const ScanRoot(path: '/home/user', isEnabled: true),
-      const ScanRoot(path: '/tmp', isEnabled: true),
-      const ScanRoot(path: '/var/cache', isEnabled: false),
-    ];
+  ConsumerState<SettingsPage> createState() => _SettingsPageState();
+}
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
-      body: ListView(
-        children: [
-          _buildScanRootsSection(context, mockScanRoots),
-          const Divider(),
-          _buildWhitelistSection(context),
-          const Divider(),
-          _buildLanguageSection(context),
-          const Divider(),
-          _buildDangerZoneSection(context),
-          const Divider(),
-          _buildAboutSection(context),
-        ],
+class _SettingsPageState extends ConsumerState<SettingsPage> {
+  @override
+  Widget build(BuildContext context) {
+    final scanRootsAsync = ref.watch(scanRootsProvider);
+
+    return scanRootsAsync.when(
+      loading: () => Scaffold(
+        appBar: AppBar(title: const Text('Settings')),
+        body: const Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, stack) => Scaffold(
+        appBar: AppBar(title: const Text('Settings')),
+        body: Center(child: Text('Error: $error')),
+      ),
+      data: (scanRoots) => Scaffold(
+        appBar: AppBar(title: const Text('Settings')),
+        body: ListView(
+          children: [
+            _buildScanRootsSection(context, scanRoots),
+            const Divider(),
+            _buildWhitelistSection(context),
+            const Divider(),
+            _buildLanguageSection(context),
+            const Divider(),
+            _buildDangerZoneSection(context),
+            const Divider(),
+            _buildAboutSection(context),
+          ],
+        ),
       ),
     );
   }
@@ -54,17 +62,62 @@ class SettingsPage extends ConsumerWidget {
           ),
         ),
         ...scanRoots.map(
-          (root) => SwitchListTile(
-            title: Text(root.path),
-            subtitle: Text(root.isEnabled ? 'Enabled' : 'Disabled'),
-            value: root.isEnabled,
-            onChanged: (value) {},
+          (root) => Dismissible(
+            key: Key('scan_root_${root.id}'),
+            direction: DismissDirection.endToStart,
+            background: Container(
+              color: Theme.of(context).colorScheme.error,
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 16.0),
+              child: const Icon(Icons.delete, color: Colors.white),
+            ),
+            confirmDismiss: (direction) async {
+              return await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Delete Scan Root'),
+                  content: Text('Remove "${root.path}" from scan roots?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Cancel'),
+                    ),
+                    FilledButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                      ),
+                      child: const Text('Delete'),
+                    ),
+                  ],
+                ),
+              );
+            },
+            onDismissed: (direction) async {
+              await ref.read(scanRootServiceProvider).deleteScanRoot(root.id);
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Removed ${root.path}')),
+                );
+              }
+            },
+            child: SwitchListTile(
+              title: Text(root.path),
+              subtitle: Text(root.enabled ? 'Enabled' : 'Disabled'),
+              value: root.enabled,
+              onChanged: (value) {
+                ref.read(scanRootServiceProvider).toggleScanRoot(
+                      root.id,
+                      enabled: value,
+                    );
+              },
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: FilledButton.tonalIcon(
-            onPressed: () {},
+            onPressed: () => _showAddScanRootDialog(context),
             icon: const Icon(Icons.add),
             label: const Text('Add Scan Root'),
           ),
@@ -91,14 +144,14 @@ class SettingsPage extends ConsumerWidget {
           title: const Text('Export Whitelist'),
           subtitle: const Text('Save whitelist to file'),
           trailing: const Icon(Icons.chevron_right),
-          onTap: () {},
+          onTap: () => _exportWhitelist(context),
         ),
         ListTile(
           leading: const Icon(Icons.download),
           title: const Text('Import Whitelist'),
           subtitle: const Text('Load whitelist from file'),
           trailing: const Icon(Icons.chevron_right),
-          onTap: () {},
+          onTap: () => _importWhitelist(context),
         ),
       ],
     );
@@ -137,9 +190,9 @@ class SettingsPage extends ConsumerWidget {
           child: Text(
             'Danger Zone',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.error,
-            ),
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.error,
+                ),
           ),
         ),
         ListTile(
@@ -187,7 +240,6 @@ class SettingsPage extends ConsumerWidget {
       ],
     );
   }
-
   void _showLanguageDialog(BuildContext context) {
     var selectedLanguage = 'en';
     showDialog(
@@ -239,9 +291,7 @@ class SettingsPage extends ConsumerWidget {
             child: const Text('Cancel'),
           ),
           FilledButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () => _clearAllData(context),
             style: FilledButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
@@ -250,5 +300,142 @@ class SettingsPage extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  void _showAddScanRootDialog(BuildContext context) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add Scan Root'),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            labelText: 'Directory Path',
+            hintText: '/path/to/directory',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () async {
+              final path = controller.text.trim();
+              if (path.isEmpty) return;
+              Navigator.pop(context);
+              try {
+                await ref.read(scanRootServiceProvider).addScanRoot(path);
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Added scan root: $path')),
+                  );
+                }
+              } on ArgumentError catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(e.message),
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                    ),
+                  );
+                }
+              }
+            },
+            child: const Text('Add'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _exportWhitelist(BuildContext context) async {
+    try {
+      final result = await FilePicker.platform.saveFile(
+        dialogTitle: 'Export Whitelist',
+        fileName: 'whitelist.json',
+      );
+      if (result != null) {
+        await ref.read(exportImportServiceProvider).exportToFile(result);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Whitelist exported successfully')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Export failed: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _importWhitelist(BuildContext context) async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+      );
+      if (result != null && result.files.single.path != null) {
+        await ref
+            .read(exportImportServiceProvider)
+            .importFromFile(result.files.single.path!);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Whitelist imported successfully')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Import failed: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _clearAllData(BuildContext context) async {
+    Navigator.pop(context);
+    try {
+      final scanRoots =
+          await ref.read(scanRootServiceProvider).getAllScanRoots();
+      for (final root in scanRoots) {
+        await ref.read(scanRootServiceProvider).deleteScanRoot(root.id);
+      }
+      final items = await ref.read(whitelistServiceProvider).getAllItems();
+      for (final item in items) {
+        await ref.read(whitelistServiceProvider).deleteItem(item.id);
+      }
+      final groups = await ref.read(groupServiceProvider).getRootGroups();
+      for (final group in groups) {
+        await ref
+            .read(groupServiceProvider)
+            .deleteGroupAndChildren(group.id);
+      }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('All data cleared')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Clear failed: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
   }
 }

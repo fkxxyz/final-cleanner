@@ -12,6 +12,7 @@ import '../services/group_service.dart';
 import '../services/path_matcher_service.dart';
 import '../services/scan_root_service.dart';
 import '../services/whitelist_service.dart';
+import '../services/scan_service.dart';
 
 final databaseProvider = Provider<AppDatabase>((ref) {
   final db = AppDatabase();
@@ -69,4 +70,36 @@ final whitelistItemsProvider = StreamProvider<List<WhitelistItem>>((ref) {
 
 final scanRootsProvider = StreamProvider<List<ScanRoot>>((ref) {
   return ref.watch(scanRootServiceProvider).watchAllScanRoots();
+});
+
+
+final scanServiceProvider = Provider<ScanService>((ref) {
+  final service = ScanService(
+    ref.watch(scanRootServiceProvider),
+    ref.watch(whitelistServiceProvider),
+    ref.watch(pathMatcherServiceProvider),
+  );
+  ref.onDispose(() => service.dispose());
+  return service;
+});
+
+final groupsProvider = FutureProvider<List<Group>>((ref) {
+  return ref.watch(groupServiceProvider).getRootGroups();
+});
+
+final groupItemsProvider =
+    FutureProvider.family<List<WhitelistItem>, int>((ref, groupId) {
+  return ref.watch(groupServiceProvider).getItemsInGroup(groupId);
+});
+
+final ungroupedItemsProvider =
+    FutureProvider<List<WhitelistItem>>((ref) async {
+  final allItems = await ref.watch(whitelistServiceProvider).getAllItems();
+  final groupService = ref.watch(groupServiceProvider);
+  final ungrouped = <WhitelistItem>[];
+  for (final item in allItems) {
+    final groups = await groupService.getGroupsForItem(item.id);
+    if (groups.isEmpty) ungrouped.add(item);
+  }
+  return ungrouped;
 });

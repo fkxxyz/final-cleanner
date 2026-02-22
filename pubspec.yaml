@@ -1,0 +1,53 @@
+name: final_cleanner
+description: "A whitelist-driven file management tool for power users."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State management
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # Database
+  drift: ^2.22.1
+  sqlite3_flutter_libs: ^0.5.28
+  path_provider: ^2.1.5
+  path: ^1.9.1
+
+  # Permissions
+  permission_handler: ^11.3.1
+
+  # File picker
+  file_picker: ^8.1.6
+
+  # Internationalization
+  intl: any
+
+  # Icons
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+  # Drift code generation
+  drift_dev: ^2.22.1
+  build_runner: ^2.4.14
+
+  # Riverpod code generation
+  riverpod_generator: ^2.6.3
+  custom_lint: ^0.7.5
+  riverpod_lint: ^2.6.3
+
+flutter:
+  uses-material-design: true
+  generate: true

@@ -1,0 +1,121 @@
+{
+  "@@locale": "en",
+  "appTitle": "Final Cleanner",
+  "navScan": "Scan",
+  "navWhitelist": "Whitelist",
+  "navSettings": "Settings",
+  "scanTitle": "Scan",
+  "scanStart": "Start Scan",
+  "scanStop": "Stop Scan",
+  "scanProgress": "Scanned {count} files",
+  "@scanProgress": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "scanFound": "Found {count} non-whitelisted items",
+  "@scanFound": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "scanCurrentPath": "Scanning: {path}",
+  "@scanCurrentPath": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "scanComplete": "Scan complete",
+  "scanNoRoots": "No scan roots configured. Add one in Settings.",
+  "scanResultsEmpty": "No non-whitelisted items found.",
+  "resultsTitle": "Scan Results",
+  "resultsSelectAll": "Select All",
+  "resultsDeselectAll": "Deselect All",
+  "resultsDeleteSelected": "Delete Selected ({count})",
+  "@resultsDeleteSelected": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "resultsAddToWhitelist": "Add to Whitelist",
+  "resultsSortBySize": "Sort by Size",
+  "resultsSortByTime": "Sort by Time",
+  "resultsSortByPath": "Sort by Path",
+  "resultsFilterByType": "Filter by Type",
+  "whitelistTitle": "Whitelist",
+  "whitelistAddItem": "Add Item",
+  "whitelistAddGroup": "Add Group",
+  "whitelistSearch": "Search whitelist...",
+  "whitelistEmpty": "No whitelist items yet.",
+  "whitelistItemCount": "{count} items",
+  "@whitelistItemCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "whitelistMoveToGroup": "Move to Group",
+  "whitelistUngrouped": "Ungrouped",
+  "settingsTitle": "Settings",
+  "settingsScanRoots": "Scan Root Directories",
+  "settingsAddScanRoot": "Add Scan Root",
+  "settingsExport": "Export Whitelist",
+  "settingsImport": "Import Whitelist",
+  "settingsLanguage": "Language",
+  "settingsClearData": "Clear All Data",
+  "settingsAbout": "About",
+  "settingsVersion": "Version {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {"type": "String"}
+    }
+  },
+  "dialogConfirmDelete": "Are you sure you want to delete?",
+  "dialogConfirmDeleteBatch": "Delete {count} items? This will free {size}.",
+  "@dialogConfirmDeleteBatch": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "size": {"type": "String"}
+    }
+  },
+  "dialogConfirmClearData": "This will delete all data. This cannot be undone.",
+  "dialogCancel": "Cancel",
+  "dialogConfirm": "Confirm",
+  "dialogDelete": "Delete",
+  "dialogSave": "Save",
+  "fieldPath": "Path",
+  "fieldName": "Name (optional)",
+  "fieldNote": "Note (optional)",
+  "fieldGroupName": "Group Name",
+  "fieldGroupNote": "Group Note (optional)",
+  "errorPathEmpty": "Path cannot be empty",
+  "errorPathDuplicate": "This path is already in the whitelist",
+  "errorGroupNameEmpty": "Group name cannot be empty",
+  "errorExportFailed": "Export failed: {error}",
+  "@errorExportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "errorImportFailed": "Import failed: {error}",
+  "@errorImportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "successExport": "Whitelist exported successfully",
+  "successImport": "Whitelist imported successfully",
+  "successDelete": "Deleted {count} items, freed {size}",
+  "@successDelete": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "size": {"type": "String"}
+    }
+  },
+  "permissionStorageTitle": "Storage Permission Required",
+  "permissionStorageMessage": "Final Cleanner needs full storage access to scan and manage files.",
+  "permissionStorageButton": "Grant Permission",
+  "deleteGroupTitle": "Delete Group",
+  "deleteGroupNonEmpty": "This group contains items. Choose an action:",
+  "deleteGroupAndChildren": "Delete group and all items",
+  "deleteGroupMoveChildren": "Move items to parent group"
+}

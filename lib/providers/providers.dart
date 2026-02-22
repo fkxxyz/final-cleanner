@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/database.dart';
+import '../data/database_connection.dart';
 import '../data/repositories/group_repository.dart';
 import '../data/repositories/scan_root_repository.dart';
 import '../data/repositories/whitelist_repository.dart';
@@ -15,7 +16,7 @@ import '../services/whitelist_service.dart';
 import '../services/scan_service.dart';
 
 final databaseProvider = Provider<AppDatabase>((ref) {
-  final db = AppDatabase();
+  final db = AppDatabase(openGuiConnection());
   ref.onDispose(() => db.close());
   return db;
 });
@@ -72,7 +73,6 @@ final scanRootsProvider = StreamProvider<List<ScanRoot>>((ref) {
   return ref.watch(scanRootServiceProvider).watchAllScanRoots();
 });
 
-
 final scanServiceProvider = Provider<ScanService>((ref) {
   final service = ScanService(
     ref.watch(scanRootServiceProvider),
@@ -87,13 +87,14 @@ final groupsProvider = FutureProvider<List<Group>>((ref) {
   return ref.watch(groupServiceProvider).getRootGroups();
 });
 
-final groupItemsProvider =
-    FutureProvider.family<List<WhitelistItem>, int>((ref, groupId) {
+final groupItemsProvider = FutureProvider.family<List<WhitelistItem>, int>((
+  ref,
+  groupId,
+) {
   return ref.watch(groupServiceProvider).getItemsInGroup(groupId);
 });
 
-final ungroupedItemsProvider =
-    FutureProvider<List<WhitelistItem>>((ref) async {
+final ungroupedItemsProvider = FutureProvider<List<WhitelistItem>>((ref) async {
   final allItems = await ref.watch(whitelistServiceProvider).getAllItems();
   final groupService = ref.watch(groupServiceProvider);
   final ungrouped = <WhitelistItem>[];

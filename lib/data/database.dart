@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 
 import 'tables.dart';
 
@@ -13,9 +11,11 @@ part 'database.g.dart';
   tables: [WhitelistItems, Groups, GroupClosure, ItemGroupRelations, ScanRoots],
 )
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+  AppDatabase(super.e);
 
-  AppDatabase.forTesting(super.e);
+  /// Opens a database at the given file [path].
+  AppDatabase.withPath(String path)
+    : super(NativeDatabase.createInBackground(File(path)));
 
   @override
   int get schemaVersion => 1;
@@ -29,12 +29,4 @@ class AppDatabase extends _$AppDatabase {
       onUpgrade: (Migrator m, int from, int to) async {},
     );
   }
-}
-
-LazyDatabase _openConnection() {
-  return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'final_cleanner.db'));
-    return NativeDatabase.createInBackground(file);
-  });
 }

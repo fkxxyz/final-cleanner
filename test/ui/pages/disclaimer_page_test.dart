@@ -63,9 +63,7 @@ void main() {
         MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: DisclaimerPage(
-            onAgree: () {},
-          ),
+          home: DisclaimerPage(onAgree: () {}),
         ),
       );
 
@@ -76,7 +74,9 @@ void main() {
       // Verify AlertDialog is shown
       expect(find.byType(AlertDialog), findsOneWidget);
       expect(
-        find.text('This app requires you to understand and accept the risks to use it.'),
+        find.text(
+          'This app requires you to understand and accept the risks to use it.',
+        ),
         findsOneWidget,
       );
       expect(find.text('OK'), findsOneWidget);
@@ -87,9 +87,7 @@ void main() {
         MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: DisclaimerPage(
-            onAgree: () {},
-          ),
+          home: DisclaimerPage(onAgree: () {}),
         ),
       );
 
@@ -111,9 +109,7 @@ void main() {
         MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: DisclaimerPage(
-            onAgree: () {},
-          ),
+          home: DisclaimerPage(onAgree: () {}),
         ),
       );
 

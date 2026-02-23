@@ -45,6 +45,10 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       setState(() {
         _rootNodes = roots;
         _isLoading = false;
+        // Pre-populate expanded directories with roots (so they start expanded)
+        for (final root in roots) {
+          _expandedDirectories[root.path] = root;
+        }
       });
 
       // Auto-expand folders with autoExpand flag
@@ -101,7 +105,27 @@ class _ScanPageState extends ConsumerState<ScanPage> {
   void _handleSelection(String path, bool selected) {
     setState(() {
       _selectedPaths[path] = selected;
+      // Hierarchical selection: when selecting a folder, select all its children
+      final childPaths = _collectPathsUnder(path);
+      for (final childPath in childPaths) {
+        _selectedPaths[childPath] = selected;
+      }
     });
+  }
+
+  List<String> _collectPathsUnder(String path) {
+    final paths = <String>[];
+    final node = _expandedDirectories[path];
+    if (node != null) {
+      for (final file in node.files) {
+        paths.add(file.path);
+      }
+      for (final folder in node.folders) {
+        paths.add(folder.path);
+        paths.addAll(_collectPathsUnder(folder.path));
+      }
+    }
+    return paths;
   }
 
   Future<void> _handleAddToWhitelist(String path) async {
@@ -289,44 +313,22 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       itemCount: _rootNodes!.length,
       itemBuilder: (context, index) {
         final root = _rootNodes![index];
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Root path header
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                root.path,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-              ),
-            ),
-            // Files in root
-            ...root.files.map(
-              (file) => TreeNodeWidget(
-                file: file,
-                selectedPaths: _selectedPaths,
-                expandedDirectories: _expandedDirectories,
-                onSelectionChanged: _handleSelection,
-                onAddToWhitelist: _handleAddToWhitelist,
-                onExpand: _expandDirectory,
-                depth: 0,
-              ),
-            ),
-            // Folders in root
-            ...root.folders.map(
-              (folder) => TreeNodeWidget(
-                folder: folder,
-                selectedPaths: _selectedPaths,
-                expandedDirectories: _expandedDirectories,
-                onSelectionChanged: _handleSelection,
-                onAddToWhitelist: _handleAddToWhitelist,
-                onExpand: _expandDirectory,
-                depth: 0,
-              ),
-            ),
-          ],
+        // Wrap root as a FolderNode so it can be rendered as a tree node
+        final rootFolder = FolderNode(
+          path: root.path,
+          name: root.path,
+          sizeBytes: null,
+          autoExpand: true, // Roots start expanded
+          modifiedAt: DateTime.now(),
+        );
+        return TreeNodeWidget(
+          folder: rootFolder,
+          selectedPaths: _selectedPaths,
+          expandedDirectories: _expandedDirectories,
+          onSelectionChanged: _handleSelection,
+          onAddToWhitelist: _handleAddToWhitelist,
+          onExpand: _expandDirectory,
+          depth: 0,
         );
       },
     );

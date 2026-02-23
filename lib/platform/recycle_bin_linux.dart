@@ -61,12 +61,12 @@ class RecycleBinLinux implements RecycleBin {
 
   @override
   Future<List<String>> moveMultipleToTrash(List<String> paths) async {
-    final successful = <String>[];
+    final failed = <String>[];
     for (final path in paths) {
-      if (await moveToTrash(path)) {
-        successful.add(path);
+      if (!await moveToTrash(path)) {
+        failed.add(path);
       }
     }
-    return successful;
+    return failed;
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/directory_node.dart';
 import '../../models/folder_node.dart';
+import '../../models/scan_result.dart';
 import '../../providers/providers.dart';
 import '../widgets/tree_node_widget.dart';
 import '../widgets/add_to_whitelist_dialog.dart';
@@ -260,19 +261,61 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     }
   }
 
+  int _calculateSelectedSize() {
+    int totalSize = 0;
+    for (final entry in _selectedPaths.entries) {
+      if (!entry.value) continue;
+      final path = entry.key;
+      totalSize += _getPathSize(path, _rootNodes ?? []);
+    }
+    return totalSize;
+  }
+
+  int _getPathSize(String path, List<DirectoryNode> nodes) {
+    for (final node in nodes) {
+      for (final file in node.files) {
+        if (file.path == path) return file.sizeBytes;
+      }
+      for (final folder in node.folders) {
+        if (folder.path == path) return folder.sizeBytes ?? 0;
+        final expanded = _expandedDirectories[folder.path];
+        if (expanded != null) {
+          final size = _getPathSize(path, [expanded]);
+          if (size > 0) return size;
+        }
+      }
+    }
+    return 0;
+  }
+
+  String _formatBytes(int bytes) {
+    if (bytes < 1024) {
+      return '$bytes B';
+    } else if (bytes < 1024 * 1024) {
+      return '${(bytes / 1024).toStringAsFixed(2)} KB';
+    } else if (bytes < 1024 * 1024 * 1024) {
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(2)} MB';
+    } else if (bytes < 1024 * 1024 * 1024 * 1024) {
+      return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB';
+    } else {
+      return '${(bytes / (1024 * 1024 * 1024 * 1024)).toStringAsFixed(2)} TB';
+    }
+  }
+
   Future<void> _handleDelete() async {
     final selectedPaths = _selectedPaths.entries
         .where((e) => e.value)
         .map((e) => e.key)
         .toList();
-
     if (selectedPaths.isEmpty) return;
 
+    final totalSize = _calculateSelectedSize();
+    final formattedSize = _formatBytes(totalSize);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.dialogConfirmDelete),
-        content: Text(AppLocalizations.of(context)!.dialogConfirmDeleteBatch(selectedPaths.length, '')),
+        content: Text(AppLocalizations.of(context)!.dialogConfirmDeleteBatch(selectedPaths.length, formattedSize)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -292,20 +335,43 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     if (confirmed != true) return;
 
     try {
-      final recycleBin = ref.read(recycleBinProvider);
-      final failedPaths = await recycleBin.moveMultipleToTrash(selectedPaths);
-      final successCount = selectedPaths.length - failedPaths.length;
-      final failedCount = failedPaths.length;
+      final deletionService = ref.read(deletionServiceProvider);
+      
+      // Build ScanResult list from selected paths
+      final itemsToDelete = <ScanResult>[];
+      for (final path in selectedPaths) {
+        final size = _getPathSize(path, _rootNodes ?? []);
+        final isDir = Directory(path).existsSync();
+        itemsToDelete.add(ScanResult(
+          path: path,
+          sizeBytes: size,
+          modifiedAt: DateTime.now(),
+          isDirectory: isDir,
+        ));
+      }
+
+      final result = await deletionService.deleteItems(itemsToDelete);
+      final formattedFreed = _formatBytes(result.freedBytes);
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.successDelete(successCount, ''),
+        if (result.failCount > 0) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '${AppLocalizations.of(context)!.successDelete(result.successCount, formattedFreed)}\n${AppLocalizations.of(context)!.errorImportFailed("${result.failCount} items failed")}',
+              ),
+              duration: const Duration(seconds: 5),
             ),
-          ),
-        );
-
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.successDelete(result.successCount, formattedFreed),
+              ),
+            ),
+          );
+        }
         // Clear selection and reload
         setState(() {
           _selectedPaths.clear();

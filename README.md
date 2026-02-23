@@ -60,6 +60,21 @@ flutter build apk --release      # Android
 
 Output goes to `build/`.
 
+### Build AppImage (Linux)
+
+For single-file distribution on Linux:
+
+```bash
+linux/appimage/build-appimage.sh
+```
+
+This creates `build/Final-Cleanner-1.0.0-x86_64.AppImage` that runs on most Linux distributions without installation.
+
+Requirements:
+- Flutter SDK
+- wget (for downloading appimagetool)
+- FUSE 2 (for running AppImage)
+
 ## Use Cases
 
 - Periodically clean up stale build artifacts and caches on dev machines

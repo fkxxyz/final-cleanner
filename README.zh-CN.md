@@ -57,6 +57,21 @@ flutter build apk --release      # Android
 
 产物在 `build/` 目录下。
 
+### 构建 AppImage (Linux)
+
+单文件分发方式:
+
+```bash
+linux/appimage/build-appimage.sh
+```
+
+生成 `build/Final-Cleanner-1.0.0-x86_64.AppImage`,无需安装即可在大多数 Linux 发行版上运行。
+
+依赖:
+- Flutter SDK
+- wget (用于下载 appimagetool)
+- FUSE 2 (用于运行 AppImage)
+
 ## 使用场景
 
 - 定期清理开发机上散落的构建产物和缓存

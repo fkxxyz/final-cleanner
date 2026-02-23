@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Final Cleanner
+Comment=Whitelist-driven file management tool
+Exec=final_cleaner
+Icon=final_cleaner
+Type=Application
+Categories=Utility;FileTools;System;
+Terminal=false
+StartupWMClass=final_cleaner
+X-AppImage-Version=1.0.0

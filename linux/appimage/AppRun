@@ -1,0 +1,14 @@
+#!/bin/bash
+# AppRun wrapper for Final Cleanner
+
+SELF=$(readlink -f "$0")
+HERE=${SELF%/*}
+
+# Set up library path
+export LD_LIBRARY_PATH="${HERE}/lib:${LD_LIBRARY_PATH}"
+
+# Set up data directory
+export FLUTTER_DATA_DIR="${HERE}/data"
+
+# Execute the application
+exec "${HERE}/final_cleaner" "$@"

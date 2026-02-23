@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,11 @@ import '../../models/folder_node.dart';
 import '../../providers/providers.dart';
 import '../widgets/tree_node_widget.dart';
 import '../widgets/add_to_whitelist_dialog.dart';
+import '../../l10n/app_localizations.dart';
+
+class RefreshIntent extends Intent {
+  const RefreshIntent();
+}
 
 class ScanPage extends ConsumerStatefulWidget {
   const ScanPage({super.key});
@@ -226,10 +232,31 @@ class _ScanPageState extends ConsumerState<ScanPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Scan Results')),
-      body: _buildBody(),
-      bottomNavigationBar: _buildActionBar(),
+    return Shortcuts(
+      shortcuts: <LogicalKeySet, Intent>{
+        LogicalKeySet(LogicalKeyboardKey.f5): const RefreshIntent(),
+      },
+      child: Actions(
+        actions: <Type, Action<Intent>>{
+          RefreshIntent: CallbackAction<RefreshIntent>(
+            onInvoke: (_) => _loadRoots(),
+          ),
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Scan Results'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                tooltip: 'Refresh',
+                onPressed: _isLoading ? null : _loadRoots,
+              ),
+            ],
+          ),
+          body: _buildBody(),
+          bottomNavigationBar: _buildActionBar(),
+        ),
+      ),
     );
   }
 

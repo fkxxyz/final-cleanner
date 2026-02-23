@@ -13,6 +13,7 @@
   "scanComplete": "扫描完成",
   "scanNoRoots": "未配置扫描根目录。请在设置中添加。",
   "scanResultsEmpty": "未发现非白名单项。",
+  "scanRefresh": "刷新",
   "resultsTitle": "扫描结果",
   "resultsSelectAll": "全选",
   "resultsDeselectAll": "取消全选",

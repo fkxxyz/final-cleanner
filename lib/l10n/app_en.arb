@@ -28,6 +28,7 @@
   "scanComplete": "Scan complete",
   "scanNoRoots": "No scan roots configured. Add one in Settings.",
   "scanResultsEmpty": "No non-whitelisted items found.",
+  "scanRefresh": "Refresh",
   "resultsTitle": "Scan Results",
   "resultsSelectAll": "Select All",
   "resultsDeselectAll": "Deselect All",

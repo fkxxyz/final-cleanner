@@ -41,30 +41,14 @@ lib/
 1. **Dart**: Follow official [Effective Dart](https://dart.dev/guides/language/effective-dart) guidelines
 2. **Formatting**: Run `dart format .` before every commit
 3. **Linting**: Fix all warnings from `dart analyze`
-4. **Naming**:
-   - Classes: `PascalCase`
-   - Functions/variables: `camelCase`
-   - Constants: `lowerCamelCase` (Dart convention)
-   - Private members: prefix with `_`
+4. **Naming**: Follow [Effective Dart](https://dart.dev/guides/language/effective-dart/style#identifiers) naming conventions
 
 ### Git Commit Messages
-
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-<type>(<scope>): <subject>
-
-<body>
-
-<footer>
-```
-
-**Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
-
+Follow [Conventional Commits](https://www.conventionalcommits.org/) format.
 **Examples**:
-- `feat(scan): implement parallel filesystem traversal`
-- `fix(whitelist): resolve Trie rebuild race condition`
-- `docs(readme): add installation instructions`
+ `feat(scan): implement parallel filesystem traversal`
+ `fix(whitelist): resolve Trie rebuild race condition`
+ `docs(readme): add installation instructions`
 
 ### Database Schema
 
@@ -131,11 +115,9 @@ Use factory pattern to select implementation at runtime.
 4. **Path Validation**: Sanitize user input to prevent path traversal attacks
 
 ## Multi-language Consistency
-
-1. Every `AGENTS.md` must have a corresponding `AGENTS.zh-CN.md`
-2. All user-facing strings must be internationalized (use Flutter's `intl` package)
-3. Default language: English
-4. Supported languages (MVP): English, Simplified Chinese
+1. All user-facing strings must be internationalized (use Flutter's `intl` package)
+2. Default language: English
+3. Supported languages (MVP): English, Simplified Chinese
 
 ## Documentation
 

@@ -41,30 +41,14 @@ lib/
 1. **Dart**: 遵循官方 [Effective Dart](https://dart.dev/guides/language/effective-dart) 指南
 2. **格式化**: 每次提交前运行 `dart format .`
 3. **代码检查**: 修复所有 `dart analyze` 警告
-4. **命名规范**:
-   - 类名: `PascalCase`
-   - 函数/变量: `camelCase`
-   - 常量: `lowerCamelCase` (Dart 约定)
-   - 私有成员: 前缀 `_`
+4. **命名规范**: 遵循 [Effective Dart](https://dart.dev/guides/language/effective-dart/style#identifiers) 命名约定
 
 ### Git 提交信息
-
-遵循 [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-<type>(<scope>): <subject>
-
-<body>
-
-<footer>
-```
-
-**类型**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
-
+遵循 [Conventional Commits](https://www.conventionalcommits.org/) 格式。
 **示例**:
-- `feat(scan): 实现并行文件系统遍历`
-- `fix(whitelist): 解决 Trie 重建竞态条件`
-- `docs(readme): 添加安装说明`
+ `feat(scan): 实现并行文件系统遍历`
+ `fix(whitelist): 解决 Trie 重建竞态条件`
+ `docs(readme): 添加安装说明`
 
 ### 数据库架构
 
@@ -131,11 +115,9 @@ class RecycleBinAndroid implements RecycleBin { ... }
 4. **路径验证**: 清理用户输入防止路径遍历攻击
 
 ## 多语言一致性
-
-1. 每个 `AGENTS.md` 必须有对应的 `AGENTS.zh-CN.md`
-2. 所有面向用户的字符串必须国际化 (使用 Flutter 的 `intl` 包)
-3. 默认语言: 英语
-4. 支持语言 (MVP): 英语、简体中文
+1. 所有面向用户的字符串必须国际化 (使用 Flutter 的 `intl` 包)
+2. 默认语言: 英语
+3. 支持语言 (MVP): 英语、简体中文
 
 ## 文档
 

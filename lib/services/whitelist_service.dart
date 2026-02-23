@@ -20,6 +20,7 @@ class WhitelistService {
     required bool isDirectory,
     String? name,
     String? note,
+    int? groupId,
   }) async {
     final normalized = PathTrie.normalizePath(path);
     if (normalized.isEmpty || normalized == '/') {
@@ -36,11 +37,12 @@ class WhitelistService {
       isDirectory: isDirectory,
       name: name,
       note: note,
+      groupId: groupId,
     );
   }
 
-  Future<WhitelistItem> updateItem(int id, {String? name, String? note}) {
-    return _repo.updateItem(id, name: name, note: note);
+  Future<WhitelistItem> updateItem(int id, {String? name, String? note, int? groupId}) {
+    return _repo.updateItem(id, name: name, note: note, groupId: groupId);
   }
 
   Future<void> deleteItem(int id) => _repo.deleteItem(id);

@@ -102,4 +102,29 @@ class PathTrie {
     _root.isTerminal = false;
     _size = 0;
   }
+
+  /// Checks if the given path has any whitelisted descendants.
+  /// Returns true if any path in the trie starts with the given path.
+  bool hasWhitelistedDescendants(String path) {
+    final normalized = normalizePath(path);
+    final segments = _segments(normalized);
+    
+    var node = _root;
+    for (final segment in segments) {
+      final child = node.children[segment];
+      if (child == null) return false;
+      node = child;
+    }
+    
+    // Check if this node has any descendants (children or is terminal itself)
+    return _hasAnyDescendants(node);
+  }
+  
+  bool _hasAnyDescendants(_TrieNode node) {
+    if (node.isTerminal) return true;
+    for (final child in node.children.values) {
+      if (_hasAnyDescendants(child)) return true;
+    }
+    return false;
+  }
 }

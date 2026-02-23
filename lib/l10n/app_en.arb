@@ -118,5 +118,93 @@
   "deleteGroupTitle": "Delete Group",
   "deleteGroupNonEmpty": "This group contains items. Choose an action:",
   "deleteGroupAndChildren": "Delete group and all items",
-  "deleteGroupMoveChildren": "Move items to parent group"
+  "deleteGroupMoveChildren": "Move items to parent group",
+  "whitelistNoItems": "No whitelist items yet",
+  "whitelistNoItemsSubtitle": "Add items to protect them from deletion",
+  "whitelistEdit": "Edit",
+  "whitelistDelete": "Delete",
+  "whitelistIsDirectory": "Is Directory",
+  "whitelistEditItem": "Edit Item",
+  "whitelistPathRequired": "Path *",
+  "whitelistNameOptional": "Name (optional)",
+  "whitelistNoteOptional": "Note (optional)",
+  "whitelistGroupNameRequired": "Name *",
+  "whitelistNoGroup": "No group",
+  "whitelistErrorLoadGroups": "Failed to load groups",
+  "whitelistErrorNameEmpty": "Name cannot be empty",
+  "whitelistErrorPathExists": "Path already exists in whitelist",
+  "whitelistAddToWhitelist": "Add to Whitelist",
+  "whitelistDescription": "Description (optional)",
+  "whitelistGroup": "Group",
+  "settingsScanRootDirectories": "Scan Root Directories",
+  "settingsDeleteScanRoot": "Delete Scan Root",
+  "settingsDeleteScanRootConfirm": "Remove \"{path}\" from scan roots?",
+  "@settingsDeleteScanRootConfirm": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "settingsRemovedPath": "Removed {path}",
+  "@settingsRemovedPath": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "settingsEnabled": "Enabled",
+  "settingsDisabled": "Disabled",
+  "settingsWhitelistManagement": "Whitelist Management",
+  "settingsExportWhitelist": "Export Whitelist",
+  "settingsExportSubtitle": "Save whitelist to file",
+  "settingsImportWhitelist": "Import Whitelist",
+  "settingsImportSubtitle": "Load whitelist from file",
+  "settingsPreferences": "Preferences",
+  "settingsDangerZone": "Danger Zone",
+  "settingsClearAllData": "Clear All Data",
+  "settingsClearAllDataSubtitle": "Delete all whitelist items and settings",
+  "settingsAboutApp": "Final Cleanner",
+  "settingsVersionNumber": "Version 1.0.0",
+  "settingsAboutDescription": "A whitelist-driven file management tool for power users to maintain complete control over their systems.",
+  "settingsLanguageSystem": "System Default",
+  "settingsLanguageEnglish": "English",
+  "settingsLanguageChinese": "简体中文",
+  "settingsSelectLanguage": "Select Language",
+  "settingsOk": "OK",
+  "settingsClearDataConfirm": "This will delete all whitelist items, groups, and settings. This action cannot be undone.",
+  "settingsDeleteAll": "Delete All",
+  "settingsAddScanRootTitle": "Add Scan Root",
+  "settingsDirectoryPath": "Directory Path",
+  "settingsDirectoryPathHint": "/path/to/directory",
+  "settingsAddedScanRoot": "Added scan root: {path}",
+  "@settingsAddedScanRoot": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "settingsExportSuccess": "Whitelist exported successfully",
+  "settingsExportFailed": "Export failed: {error}",
+  "@settingsExportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "settingsImportSuccess": "Whitelist imported successfully",
+  "settingsImportFailed": "Import failed: {error}",
+  "@settingsImportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "settingsAllDataCleared": "All data cleared",
+  "settingsClearFailed": "Clear failed: {error}",
+  "@settingsClearFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "deleteGroupConfirm": "Delete group \"{name}\" and all its items?",
+  "@deleteGroupConfirm": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  }
 }

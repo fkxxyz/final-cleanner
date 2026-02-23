@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/database.dart';
 import '../../providers/providers.dart';
@@ -97,9 +98,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             onDismissed: (direction) async {
               await ref.read(scanRootServiceProvider).deleteScanRoot(root.id);
               if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Removed ${root.path}')),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('Removed ${root.path}')));
               }
             },
             child: SwitchListTile(
@@ -107,10 +108,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               subtitle: Text(root.enabled ? 'Enabled' : 'Disabled'),
               value: root.enabled,
               onChanged: (value) {
-                ref.read(scanRootServiceProvider).toggleScanRoot(
-                      root.id,
-                      enabled: value,
-                    );
+                ref
+                    .read(scanRootServiceProvider)
+                    .toggleScanRoot(root.id, enabled: value);
               },
             ),
           ),
@@ -191,9 +191,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           child: Text(
             'Danger Zone',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.error,
-                ),
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.error,
+            ),
           ),
         ),
         ListTile(
@@ -241,6 +241,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       ],
     );
   }
+
   String _getLanguageDisplayName(WidgetRef ref) {
     final locale = ref.watch(localeProvider);
     if (locale == null) return 'System Default';
@@ -253,6 +254,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         return 'System Default';
     }
   }
+
   void _showLanguageDialog(BuildContext context) {
     final currentLocale = ref.read(localeProvider);
     var selectedLanguage = currentLocale?.languageCode ?? 'system';
@@ -306,7 +308,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 if (selectedLanguage == 'system') {
                   await ref.read(localeProvider.notifier).clearLocale();
                 } else {
-                  await ref.read(localeProvider.notifier).setLocale(selectedLanguage);
+                  await ref
+                      .read(localeProvider.notifier)
+                      .setLocale(selectedLanguage);
                 }
                 if (context.mounted) {
                   Navigator.pop(context);
@@ -450,8 +454,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   Future<void> _clearAllData(BuildContext context) async {
     Navigator.pop(context);
     try {
-      final scanRoots =
-          await ref.read(scanRootServiceProvider).getAllScanRoots();
+      final scanRoots = await ref
+          .read(scanRootServiceProvider)
+          .getAllScanRoots();
       for (final root in scanRoots) {
         await ref.read(scanRootServiceProvider).deleteScanRoot(root.id);
       }
@@ -461,14 +466,12 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       }
       final groups = await ref.read(groupServiceProvider).getRootGroups();
       for (final group in groups) {
-        await ref
-            .read(groupServiceProvider)
-            .deleteGroupAndChildren(group.id);
+        await ref.read(groupServiceProvider).deleteGroupAndChildren(group.id);
       }
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('All data cleared')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('All data cleared')));
       }
     } catch (e) {
       if (mounted) {

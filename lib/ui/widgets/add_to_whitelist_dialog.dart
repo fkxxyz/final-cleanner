@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../models/group.dart';
 import '../../providers/providers.dart';
@@ -64,7 +65,7 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
     final name = _nameController.text.trim();
     if (name.isEmpty) {
       setState(() {
-        _errorMessage = 'Name cannot be empty';
+        _errorMessage = AppLocalizations.of(context)!.whitelistErrorNameEmpty;
       });
       return;
     }
@@ -85,7 +86,7 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
     final groupsAsync = ref.watch(groupsProvider);
 
     return AlertDialog(
-      title: const Text('Add to Whitelist'),
+      title: Text(AppLocalizations.of(context)!.whitelistAddToWhitelist),
       content: SizedBox(
         width: 500,
         child: Column(
@@ -95,7 +96,7 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
             TextField(
               controller: TextEditingController(text: widget.path),
               decoration: const InputDecoration(
-                labelText: 'Path',
+                labelText: AppLocalizations.of(context)!.fieldPath,
                 border: OutlineInputBorder(),
               ),
               readOnly: true,
@@ -105,7 +106,7 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
-                labelText: 'Name',
+                labelText: AppLocalizations.of(context)!.fieldName,
                 border: const OutlineInputBorder(),
                 errorText: _errorMessage,
               ),
@@ -115,7 +116,7 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
             TextField(
               controller: _descriptionController,
               decoration: const InputDecoration(
-                labelText: 'Description (optional)',
+                labelText: AppLocalizations.of(context)!.whitelistDescription,
                 border: OutlineInputBorder(),
               ),
               maxLines: 3,
@@ -126,13 +127,15 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
                 return DropdownButtonFormField<int?>(
                   value: _selectedGroupId,
                   decoration: const InputDecoration(
-                    labelText: 'Group',
+                    labelText: AppLocalizations.of(context)!.whitelistGroup,
                     border: OutlineInputBorder(),
                   ),
                   items: [
                     const DropdownMenuItem<int?>(
                       value: null,
-                      child: Text('No group'),
+                      child: Text(
+                        AppLocalizations.of(context)!.whitelistNoGroup,
+                      ),
                     ),
                     ...groups.map((group) {
                       return DropdownMenuItem<int?>(
@@ -150,7 +153,7 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
               },
               loading: () => DropdownButtonFormField<int?>(
                 decoration: InputDecoration(
-                  labelText: 'Group',
+                  labelText: AppLocalizations.of(context)!.whitelistGroup,
                   border: OutlineInputBorder(),
                 ),
                 items: [],
@@ -158,9 +161,11 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
               ),
               error: (error, stack) => DropdownButtonFormField<int?>(
                 decoration: InputDecoration(
-                  labelText: 'Group',
+                  labelText: AppLocalizations.of(context)!.whitelistGroup,
                   border: const OutlineInputBorder(),
-                  errorText: 'Failed to load groups',
+                  errorText: AppLocalizations.of(
+                    context,
+                  )!.whitelistErrorLoadGroups,
                 ),
                 items: const [],
                 onChanged: null,
@@ -172,9 +177,12 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(AppLocalizations.of(context)!.dialogCancel),
         ),
-        FilledButton(onPressed: _handleSave, child: const Text('Save')),
+        FilledButton(
+          onPressed: _handleSave,
+          child: Text(AppLocalizations.of(context)!.dialogSave),
+        ),
       ],
     );
   }

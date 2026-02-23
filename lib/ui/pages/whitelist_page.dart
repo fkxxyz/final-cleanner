@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/database.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../providers/providers.dart';
 import '../../services/whitelist_service.dart';
-
 
 class WhitelistPage extends ConsumerStatefulWidget {
   const WhitelistPage({super.key});
@@ -18,8 +18,6 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
   String _searchQuery = '';
   final Map<int, bool> _expandedGroups = {};
 
-
-
   @override
   void dispose() {
     _searchController.dispose();
@@ -29,8 +27,12 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
   List<WhitelistItem> _filterItems(List<WhitelistItem> items) {
     if (_searchQuery.isEmpty) return items;
     return items.where((item) {
-      final pathMatch = item.path.toLowerCase().contains(_searchQuery.toLowerCase());
-      final nameMatch = item.name?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false;
+      final pathMatch = item.path.toLowerCase().contains(
+        _searchQuery.toLowerCase(),
+      );
+      final nameMatch =
+          item.name?.toLowerCase().contains(_searchQuery.toLowerCase()) ??
+          false;
       return pathMatch || nameMatch;
     }).toList();
   }
@@ -46,12 +48,12 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
                 controller: _searchController,
                 autofocus: true,
                 decoration: const InputDecoration(
-                  hintText: 'Search whitelist...',
+                  hintText: AppLocalizations.of(context)!.whitelistSearch,
                   border: InputBorder.none,
                 ),
                 onChanged: (value) => setState(() => _searchQuery = value),
               )
-            : const Text('Whitelist'),
+            : Text(AppLocalizations.of(context)!.whitelistTitle),
         actions: [
           if (_isSearching)
             IconButton(
@@ -102,12 +104,12 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            'No whitelist items yet',
+            AppLocalizations.of(context)!.whitelistNoItems,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
           Text(
-            'Add items to protect them from deletion',
+            AppLocalizations.of(context)!.whitelistNoItemsSubtitle,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
@@ -142,16 +144,26 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
               leading: Icon(isExpanded ? Icons.folder_open : Icons.folder),
               title: Text(
                 group.name,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               subtitle: group.note != null ? Text(group.note!) : null,
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('${filteredItems.length} items', style: Theme.of(context).textTheme.bodySmall),
+                  Text(
+                    AppLocalizations.of(
+                      context,
+                    )!.whitelistItemCount(filteredItems.length),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
                   IconButton(
-                    icon: Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
-                    onPressed: () => setState(() => _expandedGroups[group.id] = !isExpanded),
+                    icon: Icon(
+                      isExpanded ? Icons.expand_less : Icons.expand_more,
+                    ),
+                    onPressed: () =>
+                        setState(() => _expandedGroups[group.id] = !isExpanded),
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete_outline),
@@ -159,9 +171,11 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
                   ),
                 ],
               ),
-              onTap: () => setState(() => _expandedGroups[group.id] = !isExpanded),
+              onTap: () =>
+                  setState(() => _expandedGroups[group.id] = !isExpanded),
             ),
-            if (isExpanded) ...filteredItems.map((item) => _buildWhitelistItemTile(item)),
+            if (isExpanded)
+              ...filteredItems.map((item) => _buildWhitelistItemTile(item)),
             const Divider(),
           ],
         );
@@ -183,10 +197,17 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
             ListTile(
               leading: const Icon(Icons.folder_off),
               title: Text(
-                'Ungrouped',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                AppLocalizations.of(context)!.whitelistUngrouped,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
-              trailing: Text('${filteredItems.length} items', style: Theme.of(context).textTheme.bodySmall),
+              trailing: Text(
+                AppLocalizations.of(
+                  context,
+                )!.whitelistItemCount(filteredItems.length),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
             ),
             ...filteredItems.map((item) => _buildWhitelistItemTile(item)),
           ],
@@ -242,7 +263,7 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
           children: [
             ListTile(
               leading: const Icon(Icons.add),
-              title: const Text('Add Item'),
+              title: Text(AppLocalizations.of(context)!.whitelistAddItem),
               onTap: () {
                 Navigator.pop(context);
                 _showAddItemDialog();
@@ -250,7 +271,7 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
             ),
             ListTile(
               leading: const Icon(Icons.create_new_folder),
-              title: const Text('Add Group'),
+              title: Text(AppLocalizations.of(context)!.whitelistAddGroup),
               onTap: () {
                 Navigator.pop(context);
                 _showAddGroupDialog();
@@ -271,7 +292,7 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
           children: [
             ListTile(
               leading: const Icon(Icons.edit),
-              title: const Text('Edit'),
+              title: Text(AppLocalizations.of(context)!.whitelistEdit),
               onTap: () {
                 Navigator.pop(context);
                 _showEditItemDialog(item);
@@ -279,15 +300,21 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
             ),
             ListTile(
               leading: const Icon(Icons.drive_file_move),
-              title: const Text('Move to Group'),
+              title: Text(AppLocalizations.of(context)!.whitelistMoveToGroup),
               onTap: () {
                 Navigator.pop(context);
                 _showMoveToGroupDialog(item);
               },
             ),
             ListTile(
-              leading: Icon(Icons.delete, color: Theme.of(context).colorScheme.error),
-              title: Text('Delete', style: TextStyle(color: Theme.of(context).colorScheme.error)),
+              leading: Icon(
+                Icons.delete,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              title: Text(
+                AppLocalizations.of(context)!.whitelistDelete,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 _deleteItem(item);
@@ -309,56 +336,83 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: const Text('Add Item'),
+          title: Text(AppLocalizations.of(context)!.whitelistAddItem),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: pathController,
-                decoration: const InputDecoration(labelText: 'Path *'),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(
+                    context,
+                  )!.whitelistPathRequired,
+                ),
               ),
               const SizedBox(height: 8),
               TextField(
                 controller: nameController,
-                decoration: const InputDecoration(labelText: 'Name (optional)'),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(
+                    context,
+                  )!.whitelistNameOptional,
+                ),
               ),
               const SizedBox(height: 8),
               TextField(
                 controller: noteController,
-                decoration: const InputDecoration(labelText: 'Note (optional)'),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(
+                    context,
+                  )!.whitelistNoteOptional,
+                ),
               ),
               const SizedBox(height: 8),
               SwitchListTile(
-                title: const Text('Is Directory'),
+                title: Text(AppLocalizations.of(context)!.whitelistIsDirectory),
                 value: isDirectory,
                 onChanged: (value) => setDialogState(() => isDirectory = value),
               ),
             ],
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(AppLocalizations.of(context)!.dialogCancel),
+            ),
             TextButton(
               onPressed: () async {
                 final path = pathController.text.trim();
                 if (path.isEmpty) return;
                 try {
-                  await ref.read(whitelistServiceProvider).addItem(
-                    path: path,
-                    isDirectory: isDirectory,
-                    name: nameController.text.trim().isEmpty ? null : nameController.text.trim(),
-                    note: noteController.text.trim().isEmpty ? null : noteController.text.trim(),
-                  );
+                  await ref
+                      .read(whitelistServiceProvider)
+                      .addItem(
+                        path: path,
+                        isDirectory: isDirectory,
+                        name: nameController.text.trim().isEmpty
+                            ? null
+                            : nameController.text.trim(),
+                        note: noteController.text.trim().isEmpty
+                            ? null
+                            : noteController.text.trim(),
+                      );
                   ref.invalidate(ungroupedItemsProvider);
                   if (mounted) Navigator.pop(context);
                 } on DuplicatePathException {
                   if (mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Path already exists in whitelist')),
+                      SnackBar(
+                        content: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!.whitelistErrorPathExists,
+                        ),
+                      ),
                     );
                   }
                 }
               },
-              child: const Text('Add'),
+              child: Text(AppLocalizations.of(context)!.whitelistAddItem),
             ),
           ],
         ),
@@ -373,41 +427,56 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add Group'),
+        title: Text(AppLocalizations.of(context)!.whitelistAddGroup),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: nameController,
-              decoration: const InputDecoration(labelText: 'Name *'),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(
+                  context,
+                )!.whitelistGroupNameRequired,
+              ),
             ),
             const SizedBox(height: 8),
             TextField(
               controller: noteController,
-              decoration: const InputDecoration(labelText: 'Note (optional)'),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.whitelistNoteOptional,
+              ),
             ),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalizations.of(context)!.dialogCancel),
+          ),
           TextButton(
             onPressed: () async {
               final name = nameController.text.trim();
               if (name.isEmpty) return;
               try {
-                await ref.read(groupServiceProvider).createGroup(
-                  name: name,
-                  note: noteController.text.trim().isEmpty ? null : noteController.text.trim(),
-                );
+                await ref
+                    .read(groupServiceProvider)
+                    .createGroup(
+                      name: name,
+                      note: noteController.text.trim().isEmpty
+                          ? null
+                          : noteController.text.trim(),
+                    );
                 ref.invalidate(groupsProvider);
                 if (mounted) Navigator.pop(context);
               } on ArgumentError catch (e) {
                 if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(e.message)));
                 }
               }
             },
-            child: const Text('Add'),
+            child: Text(AppLocalizations.of(context)!.whitelistAddItem),
           ),
         ],
       ),
@@ -421,33 +490,46 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Edit Item'),
+        title: Text(AppLocalizations.of(context)!.whitelistEditItem),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: nameController,
-              decoration: const InputDecoration(labelText: 'Name (optional)'),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.whitelistNameOptional,
+              ),
             ),
             const SizedBox(height: 8),
             TextField(
               controller: noteController,
-              decoration: const InputDecoration(labelText: 'Note (optional)'),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.whitelistNoteOptional,
+              ),
             ),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalizations.of(context)!.dialogCancel),
+          ),
           TextButton(
             onPressed: () async {
-              await ref.read(whitelistServiceProvider).updateItem(
-                item.id,
-                name: nameController.text.trim().isEmpty ? null : nameController.text.trim(),
-                note: noteController.text.trim().isEmpty ? null : noteController.text.trim(),
-              );
+              await ref
+                  .read(whitelistServiceProvider)
+                  .updateItem(
+                    item.id,
+                    name: nameController.text.trim().isEmpty
+                        ? null
+                        : nameController.text.trim(),
+                    note: noteController.text.trim().isEmpty
+                        ? null
+                        : noteController.text.trim(),
+                  );
               if (mounted) Navigator.pop(context);
             },
-            child: const Text('Save'),
+            child: Text(AppLocalizations.of(context)!.dialogSave),
           ),
         ],
       ),
@@ -460,21 +542,32 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Move to Group'),
+          title: Text(AppLocalizations.of(context)!.whitelistMoveToGroup),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: groups.map((group) => ListTile(
-              title: Text(group.name),
-              subtitle: group.note != null ? Text(group.note!) : null,
-              onTap: () async {
-                await ref.read(whitelistServiceProvider).updateItem(item.id, groupId: group.id);
-                ref.invalidate(ungroupedItemsProvider);
-                ref.invalidate(groupItemsProvider);
-                if (mounted) Navigator.pop(context);
-              },
-            )).toList(),
+            children: groups
+                .map(
+                  (group) => ListTile(
+                    title: Text(group.name),
+                    subtitle: group.note != null ? Text(group.note!) : null,
+                    onTap: () async {
+                      await ref
+                          .read(whitelistServiceProvider)
+                          .updateItem(item.id, groupId: group.id);
+                      ref.invalidate(ungroupedItemsProvider);
+                      ref.invalidate(groupItemsProvider);
+                      if (mounted) Navigator.pop(context);
+                    },
+                  ),
+                )
+                .toList(),
           ),
-          actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel'))],
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(AppLocalizations.of(context)!.dialogCancel),
+            ),
+          ],
         ),
       );
     });
@@ -490,13 +583,18 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Group'),
-        content: Text('Delete group "${group.name}" and all its items?'),
+        title: Text(AppLocalizations.of(context)!.deleteGroupTitle),
+        content: Text(
+          AppLocalizations.of(context)!.deleteGroupConfirm(group.name),
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(AppLocalizations.of(context)!.dialogCancel),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
+            child: Text(AppLocalizations.of(context)!.dialogDelete),
           ),
         ],
       ),
@@ -506,6 +604,5 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
       ref.invalidate(groupsProvider);
       ref.invalidate(ungroupedItemsProvider);
     }
-}
-
+  }
 }

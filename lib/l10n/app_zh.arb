@@ -8,8 +8,23 @@
   "scanStart": "开始扫描",
   "scanStop": "停止扫描",
   "scanProgress": "已扫描 {count} 个文件",
+  "@scanProgress": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
   "scanFound": "发现 {count} 个非白名单项",
+  "@scanFound": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
   "scanCurrentPath": "正在扫描: {path}",
+  "@scanCurrentPath": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
   "scanComplete": "扫描完成",
   "scanNoRoots": "未配置扫描根目录。请在设置中添加。",
   "scanResultsEmpty": "未发现非白名单项。",
@@ -18,6 +33,11 @@
   "resultsSelectAll": "全选",
   "resultsDeselectAll": "取消全选",
   "resultsDeleteSelected": "删除选中 ({count})",
+  "@resultsDeleteSelected": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
   "resultsAddToWhitelist": "添加到白名单",
   "resultsSortBySize": "按大小排序",
   "resultsSortByTime": "按时间排序",
@@ -29,6 +49,11 @@
   "whitelistSearch": "搜索白名单...",
   "whitelistEmpty": "暂无白名单项。",
   "whitelistItemCount": "{count} 个项目",
+  "@whitelistItemCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
   "whitelistMoveToGroup": "移动到分组",
   "whitelistUngrouped": "未分组",
   "settingsTitle": "设置",
@@ -40,8 +65,19 @@
   "settingsClearData": "清除所有数据",
   "settingsAbout": "关于",
   "settingsVersion": "版本 {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {"type": "String"}
+    }
+  },
   "dialogConfirmDelete": "确定要删除吗？",
   "dialogConfirmDeleteBatch": "删除 {count} 个项目？将释放 {size} 空间。",
+  "@dialogConfirmDeleteBatch": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "size": {"type": "String"}
+    }
+  },
   "dialogConfirmClearData": "这将删除所有数据。此操作不可撤销。",
   "dialogCancel": "取消",
   "dialogConfirm": "确认",
@@ -56,15 +92,119 @@
   "errorPathDuplicate": "此路径已在白名单中",
   "errorGroupNameEmpty": "分组名称不能为空",
   "errorExportFailed": "导出失败: {error}",
+  "@errorExportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
   "errorImportFailed": "导入失败: {error}",
+  "@errorImportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
   "successExport": "白名单导出成功",
   "successImport": "白名单导入成功",
   "successDelete": "已删除 {count} 个项目，释放 {size}",
+  "@successDelete": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "size": {"type": "String"}
+    }
+  },
   "permissionStorageTitle": "需要存储权限",
   "permissionStorageMessage": "终极清理需要完整的存储访问权限来扫描和管理文件。",
   "permissionStorageButton": "授予权限",
   "deleteGroupTitle": "删除分组",
   "deleteGroupNonEmpty": "此分组包含项目。请选择操作：",
   "deleteGroupAndChildren": "删除分组及所有项目",
-  "deleteGroupMoveChildren": "将项目移至上级分组"
+  "deleteGroupMoveChildren": "将项目移至上级分组",
+  "whitelistNoItems": "暂无白名单项",
+  "whitelistNoItemsSubtitle": "添加项目以保护它们不被删除",
+  "whitelistEdit": "编辑",
+  "whitelistDelete": "删除",
+  "whitelistIsDirectory": "是目录",
+  "whitelistEditItem": "编辑项目",
+  "whitelistPathRequired": "路径 *",
+  "whitelistNameOptional": "名称（可选）",
+  "whitelistNoteOptional": "备注（可选）",
+  "whitelistGroupNameRequired": "名称 *",
+  "whitelistNoGroup": "无分组",
+  "whitelistErrorLoadGroups": "加载分组失败",
+  "whitelistErrorNameEmpty": "名称不能为空",
+  "whitelistErrorPathExists": "路径已存在于白名单中",
+  "whitelistAddToWhitelist": "添加到白名单",
+  "whitelistDescription": "描述（可选）",
+  "whitelistGroup": "分组",
+  "settingsScanRootDirectories": "扫描根目录",
+  "settingsDeleteScanRoot": "删除扫描根目录",
+  "settingsDeleteScanRootConfirm": "从扫描根目录中移除 \"{path}\"？",
+  "@settingsDeleteScanRootConfirm": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "settingsRemovedPath": "已移除 {path}",
+  "@settingsRemovedPath": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "settingsEnabled": "已启用",
+  "settingsDisabled": "已禁用",
+  "settingsWhitelistManagement": "白名单管理",
+  "settingsExportWhitelist": "导出白名单",
+  "settingsExportSubtitle": "保存白名单到文件",
+  "settingsImportWhitelist": "导入白名单",
+  "settingsImportSubtitle": "从文件加载白名单",
+  "settingsPreferences": "偏好设置",
+  "settingsDangerZone": "危险区域",
+  "settingsClearAllData": "清除所有数据",
+  "settingsClearAllDataSubtitle": "删除所有白名单项和设置",
+  "settingsAboutApp": "终极清理",
+  "settingsVersionNumber": "版本 1.0.0",
+  "settingsAboutDescription": "一个白名单驱动的文件管理工具，让高级用户完全掌控他们的系统。",
+  "settingsLanguageSystem": "跟随系统",
+  "settingsLanguageEnglish": "English",
+  "settingsLanguageChinese": "简体中文",
+  "settingsSelectLanguage": "选择语言",
+  "settingsOk": "确定",
+  "settingsClearDataConfirm": "这将删除所有白名单项、分组和设置。此操作不可撤销。",
+  "settingsDeleteAll": "全部删除",
+  "settingsAddScanRootTitle": "添加扫描根目录",
+  "settingsDirectoryPath": "目录路径",
+  "settingsDirectoryPathHint": "/path/to/directory",
+  "settingsAddedScanRoot": "已添加扫描根目录: {path}",
+  "@settingsAddedScanRoot": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "settingsExportSuccess": "白名单导出成功",
+  "settingsExportFailed": "导出失败: {error}",
+  "@settingsExportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "settingsImportSuccess": "白名单导入成功",
+  "settingsImportFailed": "导入失败: {error}",
+  "@settingsImportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "settingsAllDataCleared": "所有数据已清除",
+  "settingsClearFailed": "清除失败: {error}",
+  "@settingsClearFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "deleteGroupConfirm": "删除分组 \"{name}\" 及其所有项目？",
+  "@deleteGroupConfirm": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  }
 }

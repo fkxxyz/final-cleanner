@@ -414,7 +414,6 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
                             ? null
                             : noteController.text.trim(),
                       );
-                  ref.invalidate(ungroupedItemsProvider);
                   if (mounted) Navigator.pop(context);
                 } on DuplicatePathException {
                   if (mounted) {
@@ -572,8 +571,6 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
                       await ref
                           .read(whitelistServiceProvider)
                           .updateItem(item.id, groupId: group.id);
-                      ref.invalidate(ungroupedItemsProvider);
-                      ref.invalidate(groupItemsProvider);
                       if (mounted) Navigator.pop(context);
                     },
                   ),
@@ -593,8 +590,6 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
 
   Future<void> _deleteItem(WhitelistItem item) async {
     await ref.read(whitelistServiceProvider).deleteItem(item.id);
-    ref.invalidate(ungroupedItemsProvider);
-    ref.invalidate(groupItemsProvider);
   }
 
   Future<void> _deleteGroup(Group group) async {
@@ -620,7 +615,6 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
     if (confirm == true) {
       await ref.read(groupServiceProvider).deleteGroupAndChildren(group.id);
       ref.invalidate(groupsProvider);
-      ref.invalidate(ungroupedItemsProvider);
     }
   }
 }

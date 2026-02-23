@@ -50,5 +50,8 @@ class GroupService {
   Future<List<WhitelistItem>> getItemsInGroup(int groupId) =>
       _repo.getItemsInGroup(groupId);
 
+  Stream<List<WhitelistItem>> watchItemsInGroup(int groupId) =>
+      _repo.watchItemsInGroup(groupId);
+
   Future<Group?> getGroupForItem(int itemId) => _repo.getGroupForItem(itemId);
 }

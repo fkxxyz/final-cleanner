@@ -227,6 +227,12 @@ class GroupRepository {
     )..where((t) => t.groupId.equals(groupId))).get();
   }
 
+  Stream<List<WhitelistItem>> watchItemsInGroup(int groupId) {
+    return (_db.select(
+      _db.whitelistItems,
+    )..where((t) => t.groupId.equals(groupId))).watch();
+  }
+
   Future<Group?> getGroupForItem(int itemId) async {
     final item = await (_db.select(
       _db.whitelistItems,

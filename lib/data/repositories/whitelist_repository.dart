@@ -77,6 +77,10 @@ class WhitelistRepository {
     return _db.select(_db.whitelistItems).watch();
   }
 
+  Stream<List<WhitelistItem>> watchUngroupedItems() {
+    return (_db.select(_db.whitelistItems)..where((t) => t.groupId.isNull())).watch();
+  }
+
   Future<List<WhitelistItem>> getAllItemsForTrie() async {
     return await (_db.select(
       _db.whitelistItems,

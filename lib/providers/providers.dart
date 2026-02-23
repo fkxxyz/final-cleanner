@@ -86,14 +86,13 @@ final groupsProvider = FutureProvider<List<Group>>((ref) {
   return ref.watch(groupServiceProvider).getRootGroups();
 });
 
-final groupItemsProvider = FutureProvider.family<List<WhitelistItem>, int>((
+final groupItemsProvider = StreamProvider.family<List<WhitelistItem>, int>((
   ref,
   groupId,
 ) {
-  return ref.watch(groupServiceProvider).getItemsInGroup(groupId);
+  return ref.watch(groupServiceProvider).watchItemsInGroup(groupId);
 });
 
-final ungroupedItemsProvider = FutureProvider<List<WhitelistItem>>((ref) async {
-  final allItems = await ref.watch(whitelistServiceProvider).getAllItems();
-  return allItems.where((item) => item.groupId == null).toList();
+final ungroupedItemsProvider = StreamProvider<List<WhitelistItem>>((ref) {
+  return ref.watch(whitelistRepositoryProvider).watchUngroupedItems();
 });

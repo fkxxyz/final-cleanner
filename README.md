@@ -26,6 +26,17 @@ That's it. You have full control over every file on your system.
 - Cross-platform: Android, Windows, Linux
 - English + Chinese UI
 
+## ⚠️ Warning
+
+> **This tool is designed for advanced users who fully understand filesystem management.**
+> 
+> - This application can **permanently delete files without recovery**
+> - Improper use may result in **critical system file loss**
+> - By using this software, you **accept all risks and responsibilities**
+> - The developers and contributors are **not liable for any data loss or damage**
+> 
+> **If you are not comfortable with these risks, do not use this tool.**
+
 ## Install
 
 ### Build from source

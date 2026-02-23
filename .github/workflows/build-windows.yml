@@ -1,0 +1,46 @@
+name: Build Windows
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+      
+      - name: Flutter doctor
+        run: flutter doctor -v
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Run tests
+        run: flutter test
+        continue-on-error: true
+      
+      - name: Build Windows release
+        run: flutter build windows --release
+      
+      - name: Upload Windows build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-release-${{ github.sha }}
+          path: build/windows/x64/runner/Release/
+          retention-days: 30

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 
 import '../../models/group.dart';
 import '../../providers/providers.dart';
@@ -95,7 +95,7 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
           children: [
             TextField(
               controller: TextEditingController(text: widget.path),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.fieldPath,
                 border: OutlineInputBorder(),
               ),
@@ -115,7 +115,7 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
             const SizedBox(height: 16),
             TextField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.whitelistDescription,
                 border: OutlineInputBorder(),
               ),
@@ -126,12 +126,12 @@ class _AddToWhitelistDialogState extends ConsumerState<AddToWhitelistDialog> {
               data: (groups) {
                 return DropdownButtonFormField<int?>(
                   value: _selectedGroupId,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.whitelistGroup,
                     border: OutlineInputBorder(),
                   ),
                   items: [
-                    const DropdownMenuItem<int?>(
+                    DropdownMenuItem<int?>(
                       value: null,
                       child: Text(
                         AppLocalizations.of(context)!.whitelistNoGroup,

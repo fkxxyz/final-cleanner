@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/database.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/providers.dart';
 import '../../services/whitelist_service.dart';
 
@@ -47,7 +47,7 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
             ? TextField(
                 controller: _searchController,
                 autofocus: true,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)!.whitelistSearch,
                   border: InputBorder.none,
                 ),

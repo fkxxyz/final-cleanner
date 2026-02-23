@@ -90,6 +90,7 @@ class FilesystemScanner {
             print('FileSystemException accessing $entityPath: ${e.message}');
             continue;
           }
+        }
       } on FileSystemException {
         continue;
       }

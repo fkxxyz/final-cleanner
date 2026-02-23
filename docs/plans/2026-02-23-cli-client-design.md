@@ -2,7 +2,7 @@
 
 ## 概述
 
-为 Final Cleanner 添加独立的 Dart CLI 可执行文件（`bin/cli.dart`），复用现有服务层，通过 git 风格子命令暴露所有功能。
+为 Final Cleaner 添加独立的 Dart CLI 可执行文件（`bin/cli.dart`），复用现有服务层，通过 git 风格子命令暴露所有功能。
 
 ## 关键决策
 

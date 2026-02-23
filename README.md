@@ -1,4 +1,4 @@
-# Final Cleanner
+# Final Cleaner
 
 [中文](README.zh-CN.md)
 
@@ -6,7 +6,7 @@ How many files on your system do you actually need?
 
 Most people have no idea. Apps silently dump caches, logs, and temp files everywhere. Over time, your system bloats and you lose track. Traditional cleaners use blacklists — you tell them what to delete. But you can never list everything.
 
-Final Cleanner flips the model: you tell it what to keep. Everything else goes.
+Final Cleaner flips the model: you tell it what to keep. Everything else goes.
 
 ## How It Works
 
@@ -68,7 +68,7 @@ For single-file distribution on Linux:
 linux/appimage/build-appimage.sh
 ```
 
-This creates `build/Final-Cleanner-1.0.0-x86_64.AppImage` that runs on most Linux distributions without installation.
+This creates `build/Final-Cleaner-1.0.0-x86_64.AppImage` that runs on most Linux distributions without installation.
 
 Requirements:
 - Flutter SDK

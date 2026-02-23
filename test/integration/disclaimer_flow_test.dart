@@ -18,7 +18,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
 
       // Act: Launch app
-      await tester.pumpWidget(const ProviderScope(child: FinalCleannerApp()));
+      await tester.pumpWidget(const ProviderScope(child: FinalCleanerApp()));
       await tester.pumpAndSettle();
 
       // Assert: DisclaimerPage is displayed
@@ -34,7 +34,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
 
       // Act: Launch app
-      await tester.pumpWidget(const ProviderScope(child: FinalCleannerApp()));
+      await tester.pumpWidget(const ProviderScope(child: FinalCleanerApp()));
       await tester.pumpAndSettle();
 
       // Verify disclaimer is shown
@@ -56,7 +56,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
 
       // Act: Launch app
-      await tester.pumpWidget(const ProviderScope(child: FinalCleannerApp()));
+      await tester.pumpWidget(const ProviderScope(child: FinalCleanerApp()));
       await tester.pumpAndSettle();
 
       // Verify disclaimer is shown
@@ -84,7 +84,7 @@ void main() {
       SharedPreferences.setMockInitialValues({'disclaimer_agreed': true});
 
       // Act: Launch app
-      await tester.pumpWidget(const ProviderScope(child: FinalCleannerApp()));
+      await tester.pumpWidget(const ProviderScope(child: FinalCleanerApp()));
       await tester.pumpAndSettle();
 
       // Assert: Main app is shown directly, no disclaimer
@@ -99,7 +99,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
 
       // Act: Launch app (don't settle immediately)
-      await tester.pumpWidget(const ProviderScope(child: FinalCleannerApp()));
+      await tester.pumpWidget(const ProviderScope(child: FinalCleanerApp()));
 
       // Assert: Loading indicator is shown initially
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -123,7 +123,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
 
       // Act: Launch app
-      await tester.pumpWidget(const ProviderScope(child: FinalCleannerApp()));
+      await tester.pumpWidget(const ProviderScope(child: FinalCleanerApp()));
       await tester.pumpAndSettle();
 
       // Assert: Disclaimer is shown (safe default behavior)

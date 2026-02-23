@@ -7,17 +7,17 @@ import 'ui/pages/app_shell.dart';
 import 'ui/pages/disclaimer_page.dart';
 
 void main() {
-  runApp(const ProviderScope(child: FinalCleannerApp()));
+  runApp(const ProviderScope(child: FinalCleanerApp()));
 }
 
-class FinalCleannerApp extends ConsumerStatefulWidget {
-  const FinalCleannerApp({super.key});
+class FinalCleanerApp extends ConsumerStatefulWidget {
+  const FinalCleanerApp({super.key});
 
   @override
-  ConsumerState<FinalCleannerApp> createState() => _FinalCleannerAppState();
+  ConsumerState<FinalCleanerApp> createState() => _FinalCleanerAppState();
 }
 
-class _FinalCleannerAppState extends ConsumerState<FinalCleannerApp> {
+class _FinalCleanerAppState extends ConsumerState<FinalCleanerApp> {
   bool? _disclaimerAgreed;
   bool _loading = true;
 
@@ -64,7 +64,7 @@ class _FinalCleannerAppState extends ConsumerState<FinalCleannerApp> {
     final locale = ref.watch(localeProvider);
 
     return MaterialApp(
-      title: 'Final Cleanner',
+      title: 'Final Cleaner',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: locale,

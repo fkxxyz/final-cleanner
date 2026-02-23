@@ -1,4 +1,4 @@
-# Final Cleanner - MVP Requirements Document
+# Final Cleaner - MVP Requirements Document
 
 **Version**: 1.0.0-MVP  
 **Date**: 2026-02-23  
@@ -6,7 +6,7 @@
 
 ## Project Overview
 
-Final Cleanner is a whitelist-driven file management tool designed for power users to maintain complete control over their Android/Windows/Linux systems by maintaining a whitelist and scanning/removing non-whitelisted files.
+Final Cleaner is a whitelist-driven file management tool designed for power users to maintain complete control over their Android/Windows/Linux systems by maintaining a whitelist and scanning/removing non-whitelisted files.
 
 ## Target Users
 

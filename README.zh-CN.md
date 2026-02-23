@@ -1,11 +1,11 @@
-# Final Cleanner
+# Final Cleaner
 [English](README.md)
 
 你的系统里有多少文件是你真正需要的？
 
 大多数人不知道。各种软件在后台悄悄写入缓存、日志、临时文件，日积月累，系统变得臃肿而失控。传统的清理工具靠黑名单——告诉它哪些该删。但你永远列不完。
 
-Final Cleanner 反过来：你告诉它哪些要留，剩下的全部清理。
+Final Cleaner 反过来：你告诉它哪些要留，剩下的全部清理。
 
 ## 工作方式
 
@@ -65,7 +65,7 @@ flutter build apk --release      # Android
 linux/appimage/build-appimage.sh
 ```
 
-生成 `build/Final-Cleanner-1.0.0-x86_64.AppImage`,无需安装即可在大多数 Linux 发行版上运行。
+生成 `build/Final-Cleaner-1.0.0-x86_64.AppImage`,无需安装即可在大多数 Linux 发行版上运行。
 
 依赖:
 - Flutter SDK

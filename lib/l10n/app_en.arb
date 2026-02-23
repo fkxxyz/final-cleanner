@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Final Cleanner",
+  "appTitle": "Final Cleaner",
   "navScan": "Scan",
   "navWhitelist": "Whitelist",
   "navSettings": "Settings",
@@ -113,7 +113,7 @@
     }
   },
   "permissionStorageTitle": "Storage Permission Required",
-  "permissionStorageMessage": "Final Cleanner needs full storage access to scan and manage files.",
+  "permissionStorageMessage": "Final Cleaner needs full storage access to scan and manage files.",
   "permissionStorageButton": "Grant Permission",
   "deleteGroupTitle": "Delete Group",
   "deleteGroupNonEmpty": "This group contains items. Choose an action:",
@@ -161,7 +161,7 @@
   "settingsDangerZone": "Danger Zone",
   "settingsClearAllData": "Clear All Data",
   "settingsClearAllDataSubtitle": "Delete all whitelist items and settings",
-  "settingsAboutApp": "Final Cleanner",
+  "settingsAboutApp": "Final Cleaner",
   "settingsVersionNumber": "Version 1.0.0",
   "settingsAboutDescription": "A whitelist-driven file management tool for power users to maintain complete control over their systems.",
   "settingsLanguageSystem": "System Default",

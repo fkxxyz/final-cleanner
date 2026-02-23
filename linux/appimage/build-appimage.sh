@@ -2,7 +2,7 @@
 set -e
 
 
-APP_NAME="Final-Cleanner"
+APP_NAME="Final-Cleaner"
 APP_VERSION="1.0.0"
 ARCH=$(uname -m)
 FLUTTER_ARCH="x64"

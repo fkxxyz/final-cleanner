@@ -1,4 +1,4 @@
-# Final Cleanner - Project Guidelines
+# Final Cleaner - Project Guidelines
 
 ## What This Project Does
 

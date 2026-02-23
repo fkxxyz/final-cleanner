@@ -1,5 +1,5 @@
 #!/bin/bash
-# AppRun wrapper for Final Cleanner
+# AppRun wrapper for Final Cleaner
 
 SELF=$(readlink -f "$0")
 HERE=${SELF%/*}

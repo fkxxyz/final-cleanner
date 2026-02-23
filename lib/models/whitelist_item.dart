@@ -6,6 +6,7 @@ class WhitelistItem {
   final bool isDirectory;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final int? groupId;
 
   const WhitelistItem({
     this.id,
@@ -15,6 +16,7 @@ class WhitelistItem {
     required this.isDirectory,
     required this.createdAt,
     required this.updatedAt,
+    this.groupId,
   });
 
   WhitelistItem copyWith({
@@ -25,6 +27,7 @@ class WhitelistItem {
     bool? isDirectory,
     DateTime? createdAt,
     DateTime? updatedAt,
+    int? groupId,
   }) {
     return WhitelistItem(
       id: id ?? this.id,
@@ -34,6 +37,7 @@ class WhitelistItem {
       isDirectory: isDirectory ?? this.isDirectory,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      groupId: groupId ?? this.groupId,
     );
   }
 
@@ -46,6 +50,7 @@ class WhitelistItem {
       'isDirectory': isDirectory,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
+      'groupId': groupId,
     };
   }
 
@@ -58,6 +63,7 @@ class WhitelistItem {
       isDirectory: json['isDirectory'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
+      groupId: json['groupId'] as int?,
     );
   }
 
@@ -71,16 +77,17 @@ class WhitelistItem {
         other.note == note &&
         other.isDirectory == isDirectory &&
         other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
+        other.updatedAt == updatedAt &&
+        other.groupId == groupId;
   }
 
   @override
   int get hashCode {
-    return Object.hash(id, path, name, note, isDirectory, createdAt, updatedAt);
+    return Object.hash(id, path, name, note, isDirectory, createdAt, updatedAt, groupId);
   }
 
   @override
   String toString() {
-    return 'WhitelistItem(id: $id, path: $path, name: $name, note: $note, isDirectory: $isDirectory, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'WhitelistItem(id: $id, path: $path, name: $name, note: $note, isDirectory: $isDirectory, createdAt: $createdAt, updatedAt: $updatedAt, groupId: $groupId)';
   }
 }

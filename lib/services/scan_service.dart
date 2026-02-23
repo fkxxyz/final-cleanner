@@ -1,162 +1,95 @@
-import 'dart:async';
-import '../models/scan_result.dart';
-import 'scan/isolate_scanner.dart';
+import 'dart:io';
+
+import '../models/directory_node.dart';
+import '../models/file_node.dart';
+import '../models/folder_node.dart';
 import 'path_matcher_service.dart';
 import 'scan_root_service.dart';
-import 'whitelist_service.dart';
-
-enum ScanState { idle, scanning, complete }
-
-class ScanStatus {
-  final ScanState state;
-  final int totalScanned;
-  final int totalFound;
-  final String? currentPath;
-  final List<ScanResult> results;
-
-  const ScanStatus({
-    required this.state,
-    this.totalScanned = 0,
-    this.totalFound = 0,
-    this.currentPath,
-    this.results = const [],
-  });
-
-  ScanStatus copyWith({
-    ScanState? state,
-    int? totalScanned,
-    int? totalFound,
-    String? currentPath,
-    List<ScanResult>? results,
-  }) {
-    return ScanStatus(
-      state: state ?? this.state,
-      totalScanned: totalScanned ?? this.totalScanned,
-      totalFound: totalFound ?? this.totalFound,
-      currentPath: currentPath ?? this.currentPath,
-      results: results ?? this.results,
-    );
-  }
-}
+// import 'whitelist_service.dart'; // Not needed for on-demand scanning
 
 class ScanService {
   final ScanRootService _scanRootService;
-  final WhitelistService _whitelistService;
+  // WhitelistService removed - not needed for on-demand scanning
   final PathMatcherService _pathMatcherService;
-
-  final _statusController = StreamController<ScanStatus>.broadcast();
-  Stream<ScanStatus> get statusStream => _statusController.stream;
-
-  ScanStatus _currentStatus = const ScanStatus(state: ScanState.idle);
-  ScanStatus get currentStatus => _currentStatus;
-
-  bool _isScanning = false;
-  final List<StreamSubscription> _activeSubscriptions = [];
 
   ScanService(
     this._scanRootService,
-    this._whitelistService,
+    // this._whitelistService,
     this._pathMatcherService,
   );
 
-  Future<void> startScan() async {
-    if (_isScanning) return;
-    _isScanning = true;
+  /// Scans a single directory and returns its contents as a DirectoryNode.
+  /// Only includes non-whitelisted items.
+  Future<DirectoryNode> scanDirectory(String path) async {
+    final dir = Directory(path);
+    final files = <FileNode>[];
+    final folders = <FolderNode>[];
 
+    try {
+      final entities = dir.listSync();
+
+      for (final entity in entities) {
+        final entityPath = entity.path;
+
+        // Skip whitelisted items
+        if (_pathMatcherService.isWhitelisted(entityPath)) {
+          continue;
+        }
+
+        if (entity is File) {
+          final stat = entity.statSync();
+          files.add(
+            FileNode(
+              path: entityPath,
+              name: _getFileName(entityPath),
+              sizeBytes: stat.size,
+              modifiedAt: stat.modified,
+            ),
+          );
+        } else if (entity is Directory) {
+          final stat = entity.statSync();
+
+          final autoExpand =
+              _pathMatcherService.hasWhitelistedDescendants(entityPath);
+          folders.add(
+            FolderNode(
+              path: entityPath,
+              name: _getFileName(entityPath),
+              // sizeBytes not calculated for on-demand scanning
+              autoExpand: autoExpand,
+              modifiedAt: stat.modified,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      // Handle permission errors or other IO exceptions
+      // Return empty lists for this directory
+    }
+
+    return DirectoryNode(path: path, files: files, folders: folders);
+  }
+
+  /// Scans all enabled scan roots and returns a list of DirectoryNodes.
+  Future<List<DirectoryNode>> scanRoots() async {
     await _pathMatcherService.rebuildTrie();
 
     final scanRoots = await _scanRootService.getEnabledScanRoots();
-    if (scanRoots.isEmpty) {
-      _updateStatus(const ScanStatus(state: ScanState.complete));
-      _isScanning = false;
-      return;
-    }
-
-    final whitelistItems = await _whitelistService.getAllItems();
-    final whitelistedPaths = whitelistItems.map((item) => item.path).toList();
-
-    _updateStatus(const ScanStatus(state: ScanState.scanning));
-
-    final results = <ScanResult>[];
-    var totalScanned = 0;
-    var totalFound = 0;
-    var activeScanners = scanRoots.length;
+    final results = <DirectoryNode>[];
 
     for (final root in scanRoots) {
-      final stream = await IsolateScanner.scanInIsolate(
-        root.path,
-        whitelistedPaths,
-      );
-
-      final subscription = stream.listen(
-        (message) {
-          if (!_isScanning) return;
-
-          if (message is Map) {
-            if (message['type'] == 'result') {
-              final result = ScanResult.fromJson(
-                message['data'] as Map<String, dynamic>,
-              );
-              results.add(result);
-              totalFound++;
-              _updateStatus(
-                _currentStatus.copyWith(
-                  totalFound: totalFound,
-                  results: List.from(results),
-                ),
-              );
-            } else if (message['type'] == 'progress') {
-              totalScanned = message['scannedCount'] as int;
-              _updateStatus(
-                _currentStatus.copyWith(
-                  totalScanned: totalScanned,
-                  currentPath: message['currentPath'] as String,
-                ),
-              );
-            }
-          }
-        },
-        onDone: () {
-          activeScanners--;
-          if (activeScanners == 0 && _isScanning) {
-            _updateStatus(_currentStatus.copyWith(state: ScanState.complete));
-            _isScanning = false;
-            _activeSubscriptions.clear();
-          }
-        },
-        onError: (error) {
-          activeScanners--;
-          if (activeScanners == 0 && _isScanning) {
-            _updateStatus(_currentStatus.copyWith(state: ScanState.complete));
-            _isScanning = false;
-            _activeSubscriptions.clear();
-          }
-        },
-      );
-
-      _activeSubscriptions.add(subscription);
+      final node = await scanDirectory(root.path);
+      results.add(node);
     }
+
+    return results;
   }
 
-  void stopScan() {
-    if (!_isScanning) return;
-    _isScanning = false;
-
-    for (final subscription in _activeSubscriptions) {
-      subscription.cancel();
-    }
-    _activeSubscriptions.clear();
-
-    _updateStatus(_currentStatus.copyWith(state: ScanState.idle));
-  }
-
-  void _updateStatus(ScanStatus status) {
-    _currentStatus = status;
-    _statusController.add(status);
-  }
-
-  void dispose() {
-    stopScan();
-    _statusController.close();
+  String _getFileName(String path) {
+    final normalized = path.replaceAll('\\', '/');
+    final segments = normalized.split('/');
+    return segments.last.isEmpty && segments.length > 1
+        ? segments[segments.length - 2]
+        : segments.last;
   }
 }

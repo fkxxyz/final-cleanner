@@ -15,5 +15,8 @@ class PathMatcherService {
 
   bool contains(String path) => _trie.contains(path);
 
+  bool hasWhitelistedDescendants(String path) =>
+      _trie.hasWhitelistedDescendants(path);
+
   int get whitelistSize => _trie.size;
 }

@@ -76,10 +76,9 @@ final scanRootsProvider = StreamProvider<List<ScanRoot>>((ref) {
 final scanServiceProvider = Provider<ScanService>((ref) {
   final service = ScanService(
     ref.watch(scanRootServiceProvider),
-    ref.watch(whitelistServiceProvider),
     ref.watch(pathMatcherServiceProvider),
   );
-  ref.onDispose(() => service.dispose());
+  // No dispose needed - ScanService has no resources to clean up
   return service;
 });
 

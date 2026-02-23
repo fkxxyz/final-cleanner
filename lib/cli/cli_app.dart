@@ -65,7 +65,6 @@ class CliApp {
       final pathMatcherService = PathMatcherService(whitelistService);
       final scanService = ScanService(
         scanRootService,
-        whitelistService,
         pathMatcherService,
       );
       final recycleBin = RecycleBinFactory.create();

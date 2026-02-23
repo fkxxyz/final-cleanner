@@ -90,10 +90,20 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     try {
       final scanService = ref.read(scanServiceProvider);
       final node = await scanService.scanDirectory(path);
-
+      // Get old size before expansion
+      final oldSize = _getFolderSize(path);
+      
       setState(() {
         _expandedDirectories[path] = node;
       });
+      
+      // Calculate new size after expansion
+      final newSize = _calculateNodeSize(node);
+      
+      // If folder became calculable, update and propagate upward
+      if (oldSize == null && newSize != null) {
+        _updateFolderSizeAndPropagate(path, newSize);
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -101,6 +111,94 @@ class _ScanPageState extends ConsumerState<ScanPage> {
         );
       }
     }
+  }
+
+  /// Gets the current size of a folder from its parent's DirectoryNode.
+  /// Returns null if folder is not calculable or is a root folder.
+  int? _getFolderSize(String path) {
+    final parentPath = _getParentPath(path);
+    if (parentPath == null) {
+      // This is a root folder, no parent to check
+      return null;
+    }
+    
+    final parentNode = _expandedDirectories[parentPath];
+    if (parentNode == null) return null;
+    
+    try {
+      final folderNode = parentNode.folders.firstWhere(
+        (f) => f.path == path,
+      );
+      return folderNode.sizeBytes;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Updates the folder's size in its parent's DirectoryNode and propagates upward.
+  void _updateFolderSizeAndPropagate(String path, int size) {
+    final parentPath = _getParentPath(path);
+    if (parentPath == null) {
+      // This is a root folder, no parent to update
+      return;
+    }
+    
+    final parentNode = _expandedDirectories[parentPath];
+    if (parentNode == null) return;
+    
+    // Update the FolderNode in parent's DirectoryNode
+    final updatedFolders = parentNode.folders.map((folder) {
+      if (folder.path == path) {
+        return folder.copyWith(sizeBytes: size);
+      }
+      return folder;
+    }).toList();
+    final updatedParentNode = parentNode.copyWith(folders: updatedFolders);
+    
+    // Get parent's old size before update
+    final oldParentSize = _getFolderSize(parentPath);
+    
+    setState(() {
+      _expandedDirectories[parentPath] = updatedParentNode;
+    });
+    
+    // Calculate parent's new size
+    final newParentSize = _calculateNodeSize(updatedParentNode);
+    
+    // If parent became calculable, propagate upward
+    if (oldParentSize == null && newParentSize != null) {
+      _updateFolderSizeAndPropagate(parentPath, newParentSize);
+    }
+  }
+  /// Calculates the total size of a DirectoryNode.
+  /// Returns null if any subfolder is not calculable (sizeBytes == null).
+  int? _calculateNodeSize(DirectoryNode node) {
+    var totalSize = 0;
+    // Add all file sizes (files are always calculable)
+    for (final file in node.files) {
+      totalSize += file.sizeBytes;
+    }
+    // Check all subfolders
+    for (final folder in node.folders) {
+      if (folder.sizeBytes == null) {
+        // Subfolder not calculable
+        return null;
+      }
+      totalSize += folder.sizeBytes!;
+    }
+    return totalSize;
+  }
+  /// Gets the parent path of a given path.
+  /// Returns null if path is a root path.
+  String? _getParentPath(String path) {
+    final normalized = path.replaceAll('\\', '/');
+    final segments = normalized.split('/').where((s) => s.isNotEmpty).toList();
+    if (segments.length <= 1) {
+      return null; // Root path
+    }
+    // Reconstruct parent path
+    final parentSegments = segments.sublist(0, segments.length - 1);
+    return '/${parentSegments.join('/')}';
   }
 
   void _handleSelection(String path, bool selected) {

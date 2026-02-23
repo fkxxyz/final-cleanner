@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/database.dart';
 import '../../providers/providers.dart';
+import '../../providers/locale_provider.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -173,7 +174,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         ListTile(
           leading: const Icon(Icons.language),
           title: const Text('Language'),
-          subtitle: const Text('English'),
+          subtitle: Text(_getLanguageDisplayName(ref)),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => _showLanguageDialog(context),
         ),
@@ -240,27 +241,60 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       ],
     );
   }
+  String _getLanguageDisplayName(WidgetRef ref) {
+    final locale = ref.watch(localeProvider);
+    if (locale == null) return 'System Default';
+    switch (locale.languageCode) {
+      case 'en':
+        return 'English';
+      case 'zh':
+        return '简体中文';
+      default:
+        return 'System Default';
+    }
+  }
   void _showLanguageDialog(BuildContext context) {
-    var selectedLanguage = 'en';
+    final currentLocale = ref.read(localeProvider);
+    var selectedLanguage = currentLocale?.languageCode ?? 'system';
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
           title: const Text('Select Language'),
-          content: RadioGroup<String>(
-            groupValue: selectedLanguage,
-            onChanged: (value) {
-              if (value != null) {
-                setDialogState(() => selectedLanguage = value);
-              }
-            },
-            child: const Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                RadioListTile<String>(title: Text('English'), value: 'en'),
-                RadioListTile<String>(title: Text('简体中文'), value: 'zh'),
-              ],
-            ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RadioListTile<String>(
+                title: const Text('System Default'),
+                value: 'system',
+                groupValue: selectedLanguage,
+                onChanged: (value) {
+                  if (value != null) {
+                    setDialogState(() => selectedLanguage = value);
+                  }
+                },
+              ),
+              RadioListTile<String>(
+                title: const Text('English'),
+                value: 'en',
+                groupValue: selectedLanguage,
+                onChanged: (value) {
+                  if (value != null) {
+                    setDialogState(() => selectedLanguage = value);
+                  }
+                },
+              ),
+              RadioListTile<String>(
+                title: const Text('简体中文'),
+                value: 'zh',
+                groupValue: selectedLanguage,
+                onChanged: (value) {
+                  if (value != null) {
+                    setDialogState(() => selectedLanguage = value);
+                  }
+                },
+              ),
+            ],
           ),
           actions: [
             TextButton(
@@ -268,7 +302,16 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               child: const Text('Cancel'),
             ),
             FilledButton(
-              onPressed: () => Navigator.pop(context, selectedLanguage),
+              onPressed: () async {
+                if (selectedLanguage == 'system') {
+                  await ref.read(localeProvider.notifier).clearLocale();
+                } else {
+                  await ref.read(localeProvider.notifier).setLocale(selectedLanguage);
+                }
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
+              },
               child: const Text('OK'),
             ),
           ],

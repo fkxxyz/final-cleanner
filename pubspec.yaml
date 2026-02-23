@@ -30,6 +30,7 @@ dependencies:
 
   # Internationalization
   intl: any
+  shared_preferences: ^2.3.4
 
   # CLI
   args: ^2.6.0

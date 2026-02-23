@@ -1,4 +1,8 @@
 import 'package:file_picker/file_picker.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../l10n/app_localizations.dart';
@@ -458,13 +462,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   Future<void> _exportWhitelist(BuildContext context) async {
     try {
-      final result = await FilePicker.platform.saveFile(
-        dialogTitle: 'Export Whitelist',
-        fileName: 'whitelist.json',
-      );
-      if (result != null) {
-        await ref.read(exportImportServiceProvider).exportToFile(result);
-        if (mounted) {
+      // Generate JSON first
+      final json = await ref.read(exportImportServiceProvider).exportToJson();
+      
+      if (Platform.isAndroid || Platform.isIOS) {
+        // On mobile platforms, pass bytes directly to saveFile()
+        final bytes = Uint8List.fromList(utf8.encode(json));
+        final result = await FilePicker.platform.saveFile(
+          dialogTitle: 'Export Whitelist',
+          fileName: 'whitelist.json',
+          bytes: bytes,
+        );
+        if (result != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -472,6 +481,24 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
             ),
           );
+        }
+      } else {
+        // On desktop platforms, get path and write file
+        final result = await FilePicker.platform.saveFile(
+          dialogTitle: 'Export Whitelist',
+          fileName: 'whitelist.json',
+        );
+        if (result != null) {
+          await ref.read(exportImportServiceProvider).exportToFile(result);
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  AppLocalizations.of(context)!.settingsExportSuccess,
+                ),
+              ),
+            );
+          }
         }
       }
     } catch (e) {

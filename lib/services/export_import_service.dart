@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import '../data/database.dart';
 import 'group_service.dart';
@@ -74,7 +75,13 @@ class ExportImportService {
 
   Future<void> exportToFile(String filePath) async {
     final json = await exportToJson();
-    await File(filePath).writeAsString(json);
+    // On Android/iOS, file_picker requires bytes instead of direct file write
+    if (Platform.isAndroid || Platform.isIOS) {
+      final bytes = Uint8List.fromList(utf8.encode(json));
+      await File(filePath).writeAsBytes(bytes);
+    } else {
+      await File(filePath).writeAsString(json);
+    }
   }
 
   Future<void> importFromJson(String jsonString) async {

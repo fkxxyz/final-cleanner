@@ -341,7 +341,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 } else {
                   await ref
                       .read(localeProvider.notifier)
-                      .setLocale(selectedLanguage);
+                      .setLocale(selectedLanguage, selectedLanguage == 'zh' ? 'CN' : null);
                 }
                 if (context.mounted) {
                   Navigator.pop(context);

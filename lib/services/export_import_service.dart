@@ -84,8 +84,28 @@ class ExportImportService {
     }
   }
 
-  Future<void> importFromJson(String jsonString) async {
+  Future<void> importFromJson(String jsonString, {bool replace = false}) async {
     final data = jsonDecode(jsonString) as Map<String, dynamic>;
+
+    // If replace mode, clear all existing data first
+    if (replace) {
+      // Delete all whitelist items
+      final existingItems = await _whitelistService.getAllItems();
+      for (final item in existingItems) {
+        await _whitelistService.deleteItem(item.id);
+      }
+      // Delete all groups
+      final existingGroups = await _groupService.getRootGroups();
+      for (final group in existingGroups) {
+        await _groupService.deleteGroupAndChildren(group.id);
+      }
+      // Delete all scan roots
+      final existingScanRoots = await _scanRootService.getAllScanRoots();
+      for (final root in existingScanRoots) {
+        await _scanRootService.deleteScanRoot(root.id);
+      }
+    }
+
 
     final groupsData = (data['groups'] as List<dynamic>?) ?? [];
     final indexToGroupId = <int, int>{};
@@ -115,6 +135,21 @@ class ExportImportService {
         // New format (many-to-one)
         groupId = indexToGroupId[itemData['groupIndex'] as int];
       }
+      
+      // In merge mode, skip if path already exists
+      if (!replace) {
+        try {
+          final existingItems = await _whitelistService.getAllItems();
+          final pathExists = existingItems.any(
+            (item) => item.path == itemData['path'] as String,
+          );
+          if (pathExists) {
+            continue; // Skip duplicate path
+          }
+        } catch (_) {
+          // If check fails, try to add anyway
+        }
+      }
       await _whitelistService.addItem(
         path: itemData['path'] as String,
         isDirectory: itemData['isDirectory'] as bool,
@@ -126,12 +161,26 @@ class ExportImportService {
 
     final scanRootsData = (data['scanRoots'] as List<dynamic>?) ?? [];
     for (final rootData in scanRootsData) {
+      // In merge mode, skip if path already exists
+      if (!replace) {
+        try {
+          final existingRoots = await _scanRootService.getAllScanRoots();
+          final pathExists = existingRoots.any(
+            (root) => root.path == rootData['path'] as String,
+          );
+          if (pathExists) {
+            continue; // Skip duplicate path
+          }
+        } catch (_) {
+          // If check fails, try to add anyway
+        }
+      }
       await _scanRootService.addScanRoot(rootData['path'] as String);
     }
   }
 
-  Future<void> importFromFile(String filePath) async {
+  Future<void> importFromFile(String filePath, {bool replace = false}) async {
     final json = await File(filePath).readAsString();
-    await importFromJson(json);
+    await importFromJson(json, replace: replace);
   }
 }

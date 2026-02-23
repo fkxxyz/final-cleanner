@@ -207,5 +207,11 @@
       "name": {"type": "String"}
     }
   },
-  "settingsLanguageTraditionalChinese": "繁體中文"
+  "settingsLanguageTraditionalChinese": "繁體中文",
+  "settingsImportConflictTitle": "Import Conflict",
+  "settingsImportConflictMessage": "You already have whitelist data. How would you like to proceed?",
+  "settingsImportReplace": "Replace",
+  "settingsImportReplaceSubtitle": "Delete existing data and import",
+  "settingsImportMerge": "Merge",
+  "settingsImportMergeSubtitle": "Keep existing data and add imported items"
 }

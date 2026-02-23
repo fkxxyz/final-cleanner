@@ -207,5 +207,11 @@
       "name": {"type": "String"}
     }
   },
-  "settingsLanguageTraditionalChinese": "繁體中文"
+  "settingsLanguageTraditionalChinese": "繁體中文",
+  "settingsImportConflictTitle": "导入冲突",
+  "settingsImportConflictMessage": "您已有白名单数据。请选择如何处理：",
+  "settingsImportReplace": "替换",
+  "settingsImportReplaceSubtitle": "删除现有数据并导入",
+  "settingsImportMerge": "合并",
+  "settingsImportMergeSubtitle": "保留现有数据并添加导入项"
 }

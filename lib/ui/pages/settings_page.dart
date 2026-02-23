@@ -522,9 +522,58 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         allowedExtensions: ['json'],
       );
       if (result != null && result.files.single.path != null) {
+        // Check if there's existing data
+        final items = await ref.read(whitelistServiceProvider).getAllItems();
+        final groups = await ref.read(groupServiceProvider).getRootGroups();
+        final scanRoots = await ref.read(scanRootServiceProvider).getAllScanRoots();
+        
+        final hasExistingData = items.isNotEmpty || groups.isNotEmpty || scanRoots.isNotEmpty;
+        
+        bool shouldReplace = false;
+        
+        if (hasExistingData && mounted) {
+          // Show conflict dialog
+          final action = await showDialog<String>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(AppLocalizations.of(context)!.settingsImportConflictTitle),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(AppLocalizations.of(context)!.settingsImportConflictMessage),
+                  const SizedBox(height: 16),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.delete_sweep),
+                    title: Text(AppLocalizations.of(context)!.settingsImportReplace),
+                    subtitle: Text(AppLocalizations.of(context)!.settingsImportReplaceSubtitle),
+                    onTap: () => Navigator.pop(context, 'replace'),
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.merge),
+                    title: Text(AppLocalizations.of(context)!.settingsImportMerge),
+                    subtitle: Text(AppLocalizations.of(context)!.settingsImportMergeSubtitle),
+                    onTap: () => Navigator.pop(context, 'merge'),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(AppLocalizations.of(context)!.dialogCancel),
+                ),
+              ],
+            ),
+          );
+          
+          if (action == null) return; // User cancelled
+          shouldReplace = action == 'replace';
+        }
         await ref
             .read(exportImportServiceProvider)
-            .importFromFile(result.files.single.path!);
+            .importFromFile(result.files.single.path!, replace: shouldReplace);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

@@ -4,20 +4,28 @@ import 'recycle_bin.dart';
 
 class RecycleBinWindows implements RecycleBin {
   @override
-  bool get isSupported => false;
+  bool get isSupported => true;
 
   @override
   Future<bool> moveToTrash(String path) async {
     try {
       final type = FileSystemEntity.typeSync(path);
       if (type == FileSystemEntityType.notFound) return false;
+      // Escape single quotes for PowerShell string literal
+      final escapedPath = path.replaceAll("'", "''");
 
-      if (type == FileSystemEntityType.directory) {
-        await Directory(path).delete(recursive: true);
-      } else {
-        await File(path).delete();
-      }
-      return true;
+      // Build PowerShell command to move file to recycle bin
+      const command = 'powershell';
+      final args = [
+        '-ExecutionPolicy',
+        'Bypass',
+        '-Command',
+        'Add-Type -AssemblyName Microsoft.VisualBasic; '
+            "[Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile('$escapedPath', 'OnlyErrorDialogs', 'SendToRecycleBin')",
+      ];
+
+      final result = await Process.run(command, args);
+      return result.exitCode == 0;
     } catch (_) {
       return false;
     }

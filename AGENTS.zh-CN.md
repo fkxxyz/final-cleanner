@@ -151,4 +151,4 @@ flutter pub outdated
 ## 联系方式
 
 - **项目负责人**: fkxxyz
-- **代码仓库**: https://github.com/fkxxyz/final-cleanner (如适用)
+- **代码仓库**: https://github.com/fkxxyz/final-cleaner (如适用)

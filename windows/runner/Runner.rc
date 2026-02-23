@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.fkxxyz" "\0"
-            VALUE "FileDescription", "final_cleanner" "\0"
+            VALUE "FileDescription", "final_cleaner" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "final_cleanner" "\0"
+            VALUE "InternalName", "final_cleaner" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.fkxxyz. All rights reserved." "\0"
-            VALUE "OriginalFilename", "final_cleanner.exe" "\0"
-            VALUE "ProductName", "final_cleanner" "\0"
+            VALUE "OriginalFilename", "final_cleaner.exe" "\0"
+            VALUE "ProductName", "final_cleaner" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

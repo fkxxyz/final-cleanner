@@ -31,7 +31,7 @@ class CliApp {
   /// Returns the process exit code.
   Future<int> run(List<String> args) async {
     final runner = CommandRunner<void>(
-      'final-cleanner',
+      'final-cleaner',
       'A whitelist-driven file management tool.',
     );
     runner.argParser

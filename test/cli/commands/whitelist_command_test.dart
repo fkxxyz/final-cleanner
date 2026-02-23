@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:args/command_runner.dart';
-import 'package:final_cleanner/cli/commands/whitelist_command.dart';
-import 'package:final_cleanner/services/whitelist_service.dart';
-import 'package:final_cleanner/data/database.dart';
+import 'package:final_cleaner/cli/commands/whitelist_command.dart';
+import 'package:final_cleaner/services/whitelist_service.dart';
+import 'package:final_cleaner/data/database.dart';
 import '../../mocks.dart';
 import '../../test_helpers.dart';
 

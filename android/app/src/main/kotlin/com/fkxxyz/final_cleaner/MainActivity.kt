@@ -1,4 +1,4 @@
-package com.fkxxyz.final_cleanner
+package com.fkxxyz.final_cleaner
 
 import io.flutter.embedding.android.FlutterActivity
 

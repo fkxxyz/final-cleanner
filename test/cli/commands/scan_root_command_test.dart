@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:final_cleanner/cli/commands/scan_root_command.dart';
-import 'package:final_cleanner/models/scan_root.dart';
-import 'package:final_cleanner/services/scan_root_service.dart';
+import 'package:final_cleaner/cli/commands/scan_root_command.dart';
+import 'package:final_cleaner/models/scan_root.dart';
+import 'package:final_cleaner/services/scan_root_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

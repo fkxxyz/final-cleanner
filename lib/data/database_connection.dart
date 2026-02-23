@@ -12,7 +12,7 @@ import 'package:path_provider/path_provider.dart';
 LazyDatabase openGuiConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'final_cleanner.db'));
+    final file = File(p.join(dbFolder.path, 'final_cleaner.db'));
     return NativeDatabase.createInBackground(file);
   });
 }

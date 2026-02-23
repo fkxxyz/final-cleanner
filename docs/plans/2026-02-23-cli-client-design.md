@@ -98,8 +98,8 @@ lib/
 ## 数据库路径解析（纯 Dart）
 
 ```
-Linux:   ~/.local/share/final_cleanner/final_cleanner.db
-Windows: %LOCALAPPDATA%\final_cleanner\final_cleanner.db
+Linux:   ~/.local/share/final_cleaner/final_cleaner.db
+Windows: %LOCALAPPDATA%\final_cleaner\final_cleaner.db
 ```
 
 与 `path_provider` 的 `getApplicationDocumentsDirectory` 对齐。

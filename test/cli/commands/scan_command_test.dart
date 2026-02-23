@@ -4,11 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:args/command_runner.dart';
 
-import 'package:final_cleanner/cli/commands/scan_command.dart';
-import 'package:final_cleanner/services/scan_service.dart';
-import 'package:final_cleanner/models/scan_result.dart';
-import 'package:final_cleanner/models/scan_status.dart';
-import 'package:final_cleanner/models/scan_state.dart';
+import 'package:final_cleaner/cli/commands/scan_command.dart';
+import 'package:final_cleaner/services/scan_service.dart';
+import 'package:final_cleaner/models/scan_result.dart';
+import 'package:final_cleaner/models/scan_status.dart';
+import 'package:final_cleaner/models/scan_state.dart';
 
 import '../../mocks.dart';
 import '../../test_helpers.dart';

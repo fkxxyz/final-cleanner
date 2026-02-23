@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:final_cleanner/services/path_trie.dart';
+import 'package:final_cleaner/services/path_trie.dart';
 
 void main() {
   group('PathTrie.hasWhitelistedDescendants', () {

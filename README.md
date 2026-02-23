@@ -33,8 +33,8 @@ That's it. You have full control over every file on your system.
 Requires [Flutter SDK](https://docs.flutter.dev/get-started/install) >= 3.41.0.
 
 ```bash
-git clone https://github.com/fkxxyz/final-cleanner.git
-cd final-cleanner
+git clone https://github.com/fkxxyz/final-cleaner.git
+cd final-cleaner
 flutter pub get
 dart run build_runner build --delete-conflicting-outputs
 ```

@@ -32,8 +32,8 @@ Final Cleanner 反过来：你告诉它哪些要留，剩下的全部清理。
 需要 [Flutter SDK](https://docs.flutter.dev/get-started/install) >= 3.41.0。
 
 ```bash
-git clone https://github.com/fkxxyz/final-cleanner.git
-cd final-cleanner
+git clone https://github.com/fkxxyz/final-cleaner.git
+cd final-cleaner
 flutter pub get
 dart run build_runner build --delete-conflicting-outputs
 ```

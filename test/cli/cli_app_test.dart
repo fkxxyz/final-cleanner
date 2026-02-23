@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:args/command_runner.dart';
-import 'package:final_cleanner/cli/cli_app.dart';
+import 'package:final_cleaner/cli/cli_app.dart';
 
 void main() {
   test('CLI app runs with --help', () async {

@@ -1,11 +1,11 @@
 import 'package:mocktail/mocktail.dart';
 
-import 'package:final_cleanner/services/whitelist_service.dart';
-import 'package:final_cleanner/services/group_service.dart';
-import 'package:final_cleanner/services/scan_root_service.dart';
-import 'package:final_cleanner/services/scan_service.dart';
-import 'package:final_cleanner/services/deletion_service.dart';
-import 'package:final_cleanner/services/export_import_service.dart';
+import 'package:final_cleaner/services/whitelist_service.dart';
+import 'package:final_cleaner/services/group_service.dart';
+import 'package:final_cleaner/services/scan_root_service.dart';
+import 'package:final_cleaner/services/scan_service.dart';
+import 'package:final_cleaner/services/deletion_service.dart';
+import 'package:final_cleaner/services/export_import_service.dart';
 
 // Create mocks for all services
 

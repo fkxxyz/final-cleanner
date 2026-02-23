@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:final_cleanner/data/database.dart';
-import 'package:final_cleanner/models/scan_root.dart';
-import 'package:final_cleanner/models/scan_result.dart';
+import 'package:final_cleaner/data/database.dart';
+import 'package:final_cleaner/models/scan_root.dart';
+import 'package:final_cleaner/models/scan_result.dart';
 
 /// Captures stdout output from a function
 Future<String> captureStdout(Future<void> Function() fn) async {

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:args/command_runner.dart';
-import 'package:final_cleanner/cli/commands/group_command.dart';
+import 'package:final_cleaner/cli/commands/group_command.dart';
 
 void main() {
   late CommandRunner<void> runner;

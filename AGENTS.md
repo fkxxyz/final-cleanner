@@ -151,4 +151,4 @@ flutter pub outdated
 ## Contact
 
 - **Project Lead**: fkxxyz
-- **Repository**: https://github.com/fkxxyz/final-cleanner (if applicable)
+- **Repository**: https://github.com/fkxxyz/final-cleaner (if applicable)

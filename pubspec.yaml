@@ -1,4 +1,4 @@
-name: final_cleanner
+name: final_cleaner
 description: "A whitelist-driven file management tool for power users."
 publish_to: 'none'
 version: 1.0.0+1

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 import 'scan_page.dart';
 import 'whitelist_page.dart';
 import 'settings_page.dart';
@@ -22,10 +23,10 @@ class _AppShellState extends State<AppShell> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (i) => setState(() => _currentIndex = i),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.search), label: 'Scan'),
-          NavigationDestination(icon: Icon(Icons.list_alt), label: 'Whitelist'),
-          NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
+        destinations: [
+          NavigationDestination(icon: Icon(Icons.search), label: AppLocalizations.of(context)!.navScan),
+          NavigationDestination(icon: Icon(Icons.list_alt), label: AppLocalizations.of(context)!.navWhitelist),
+          NavigationDestination(icon: Icon(Icons.settings), label: AppLocalizations.of(context)!.navSettings),
         ],
       ),
     );

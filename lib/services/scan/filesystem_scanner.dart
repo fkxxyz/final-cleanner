@@ -89,7 +89,7 @@ class FilesystemScanner {
             // Log permission errors instead of silently skipping
             print('FileSystemException accessing $entityPath: ${e.message}');
             continue;
-        }
+          }
       } on FileSystemException {
         continue;
       }

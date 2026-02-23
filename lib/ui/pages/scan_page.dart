@@ -61,7 +61,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Failed to scan: $e')));
+        ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorImportFailed(e.toString()))));
       }
     }
   }
@@ -107,7 +107,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to expand directory: $e')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.errorImportFailed(e.toString()))),
         );
       }
     }
@@ -246,7 +246,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text('Added to whitelist')));
+        ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.resultsAddToWhitelist)));
 
         // Reload to reflect changes
         _loadRoots();
@@ -254,7 +254,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add to whitelist: $e')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.errorImportFailed(e.toString()))),
         );
       }
     }
@@ -271,19 +271,19 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: Text('Delete ${selectedPaths.length} item(s)?'),
+        title: Text(AppLocalizations.of(context)!.dialogConfirmDelete),
+        content: Text(AppLocalizations.of(context)!.dialogConfirmDeleteBatch(selectedPaths.length, '')),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.dialogCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: FilledButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: const Text('Delete'),
+            child: Text(AppLocalizations.of(context)!.dialogDelete),
           ),
         ],
       ),
@@ -301,7 +301,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Deleted $successCount item(s)${failedCount > 0 ? ', $failedCount failed' : ''}',
+              AppLocalizations.of(context)!.successDelete(successCount, ''),
             ),
           ),
         );
@@ -316,7 +316,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Failed to delete: $e')));
+        ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorImportFailed(e.toString()))));
       }
     }
   }
@@ -367,11 +367,11 @@ class _ScanPageState extends ConsumerState<ScanPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Scan Results'),
+            title: Text(AppLocalizations.of(context)!.resultsTitle),
             actions: [
               IconButton(
                 icon: const Icon(Icons.refresh),
-                tooltip: 'Refresh',
+                tooltip: AppLocalizations.of(context)!.scanRefresh,
                 onPressed: _isLoading ? null : _loadRoots,
               ),
             ],
@@ -400,7 +400,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'No non-whitelisted items found',
+              AppLocalizations.of(context)!.scanResultsEmpty,
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ],
@@ -450,14 +450,14 @@ class _ScanPageState extends ConsumerState<ScanPage> {
                   ? Icons.check_box
                   : Icons.check_box_outline_blank,
             ),
-            label: Text(selectedCount > 0 ? 'Deselect All' : 'Select All'),
+            label: Text(selectedCount > 0 ? AppLocalizations.of(context)!.resultsDeselectAll : AppLocalizations.of(context)!.resultsSelectAll),
           ),
           const Spacer(),
           if (selectedCount > 0) ...[
             FilledButton.icon(
               onPressed: _handleDelete,
               icon: const Icon(Icons.delete),
-              label: Text('Delete ($selectedCount)'),
+              label: Text(AppLocalizations.of(context)!.resultsDeleteSelected(selectedCount)),
               style: FilledButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.error,
               ),

@@ -232,10 +232,28 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
           item.isDirectory ? Icons.folder : Icons.insert_drive_file,
           color: Theme.of(context).colorScheme.primary,
         ),
-        title: Text(
-          item.name ?? item.path.split('/').last,
+        title: RichText(
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
+          text: TextSpan(
+            style: DefaultTextStyle.of(context).style,
+            children: [
+              TextSpan(text: item.name ?? item.path.split('/').last),
+              if (item.note != null) ...[
+                TextSpan(
+                  text: ' • ',
+                  style: TextStyle(color: Colors.grey),
+                ),
+                TextSpan(
+                  text: item.note,
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
         subtitle: item.name != null
             ? Text(

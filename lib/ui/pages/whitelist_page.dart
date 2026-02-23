@@ -467,7 +467,7 @@ class _WhitelistPageState extends ConsumerState<WhitelistPage> {
               title: Text(group.name),
               subtitle: group.note != null ? Text(group.note!) : null,
               onTap: () async {
-                await ref.read(groupServiceProvider).addItemToGroup(item.id, group.id);
+                await ref.read(whitelistServiceProvider).updateItem(item.id, groupId: group.id);
                 ref.invalidate(ungroupedItemsProvider);
                 ref.invalidate(groupItemsProvider);
                 if (mounted) Navigator.pop(context);

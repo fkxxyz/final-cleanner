@@ -95,11 +95,5 @@ final groupItemsProvider = FutureProvider.family<List<WhitelistItem>, int>((
 
 final ungroupedItemsProvider = FutureProvider<List<WhitelistItem>>((ref) async {
   final allItems = await ref.watch(whitelistServiceProvider).getAllItems();
-  final groupService = ref.watch(groupServiceProvider);
-  final ungrouped = <WhitelistItem>[];
-  for (final item in allItems) {
-    final groups = await groupService.getGroupsForItem(item.id);
-    if (groups.isEmpty) ungrouped.add(item);
-  }
-  return ungrouped;
+  return allItems.where((item) => item.groupId == null).toList();
 });

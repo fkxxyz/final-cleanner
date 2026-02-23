@@ -47,21 +47,19 @@ class ExportImportService {
 
     final itemsData = <Map<String, dynamic>>[];
     for (final item in items) {
-      final groups = await _groupService.getGroupsForItem(item.id);
-      final groupIndices = groups
-          .map((g) => groupIndexMap[g.id])
-          .where((idx) => idx != null)
-          .cast<int>()
-          .toList();
-
+      int? groupIndex;
+      if (item.groupId != null) {
+        groupIndex = groupIndexMap[item.groupId];
+      }
       itemsData.add({
         'path': item.path,
         'isDirectory': item.isDirectory,
         'name': item.name,
         'note': item.note,
-        'groupIndices': groupIndices,
+        'groupIndex': groupIndex,
       });
     }
+
 
     final exportData = {
       'whitelistItems': itemsData,
@@ -101,20 +99,22 @@ class ExportImportService {
 
     final itemsData = (data['whitelistItems'] as List<dynamic>?) ?? [];
     for (final itemData in itemsData) {
-      final item = await _whitelistService.addItem(
+      int? groupId;
+      final groupIndices = (itemData['groupIndices'] as List<dynamic>?) ?? [];
+      if (groupIndices.isNotEmpty) {
+        // Backward compatibility: old format (many-to-many), take first
+        groupId = indexToGroupId[groupIndices.first as int];
+      } else if (itemData['groupIndex'] != null) {
+        // New format (many-to-one)
+        groupId = indexToGroupId[itemData['groupIndex'] as int];
+      }
+      await _whitelistService.addItem(
         path: itemData['path'] as String,
         isDirectory: itemData['isDirectory'] as bool,
         name: itemData['name'] as String?,
         note: itemData['note'] as String?,
+        groupId: groupId,
       );
-
-      final groupIndices = (itemData['groupIndices'] as List<dynamic>?) ?? [];
-      for (final index in groupIndices) {
-        final groupId = indexToGroupId[index as int];
-        if (groupId != null) {
-          await _groupService.addItemToGroup(item.id, groupId);
-        }
-      }
     }
 
     final scanRootsData = (data['scanRoots'] as List<dynamic>?) ?? [];

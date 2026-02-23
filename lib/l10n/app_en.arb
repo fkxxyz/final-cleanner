@@ -206,5 +206,6 @@
     "placeholders": {
       "name": {"type": "String"}
     }
-  }
+  },
+  "settingsLanguageTraditionalChinese": "繁體中文"
 }

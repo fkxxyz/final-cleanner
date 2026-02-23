@@ -7,6 +7,7 @@ const String _localeKey = 'app_locale';
 const List<Locale> _supportedLocales = [
   Locale('en'),      // English
   Locale('zh', 'CN'), // Simplified Chinese
+  Locale('zh', 'TW'), // Traditional Chinese
 ];
 class LocaleNotifier extends StateNotifier<Locale?> {
   LocaleNotifier() : super(null) {

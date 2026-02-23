@@ -274,6 +274,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       case 'en':
         return AppLocalizations.of(context)!.settingsLanguageEnglish;
       case 'zh':
+        if (locale.countryCode == 'TW') {
+          return AppLocalizations.of(context)!.settingsLanguageTraditionalChinese;
+        }
         return AppLocalizations.of(context)!.settingsLanguageChinese;
       default:
         return AppLocalizations.of(context)!.settingsLanguageSystem;
@@ -282,7 +285,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   void _showLanguageDialog(BuildContext context) {
     final currentLocale = ref.read(localeProvider);
-    var selectedLanguage = currentLocale?.languageCode ?? 'system';
+    var selectedLanguage = currentLocale == null
+        ? 'system'
+        : currentLocale.countryCode != null
+            ? '${currentLocale.languageCode}_${currentLocale.countryCode}'
+            : currentLocale.languageCode;
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -319,7 +326,19 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 title: Text(
                   AppLocalizations.of(context)!.settingsLanguageChinese,
                 ),
-                value: 'zh',
+                value: 'zh_CN',
+                groupValue: selectedLanguage,
+                onChanged: (value) {
+                  if (value != null) {
+                    setDialogState(() => selectedLanguage = value);
+                  }
+                },
+              ),
+              RadioListTile<String>(
+                title: Text(
+                  AppLocalizations.of(context)!.settingsLanguageTraditionalChinese,
+                ),
+                value: 'zh_TW',
                 groupValue: selectedLanguage,
                 onChanged: (value) {
                   if (value != null) {
@@ -338,10 +357,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               onPressed: () async {
                 if (selectedLanguage == 'system') {
                   await ref.read(localeProvider.notifier).clearLocale();
+                } else if (selectedLanguage.contains('_')) {
+                  final parts = selectedLanguage.split('_');
+                  await ref
+                      .read(localeProvider.notifier)
+                      .setLocale(parts[0], parts[1]);
                 } else {
                   await ref
                       .read(localeProvider.notifier)
-                      .setLocale(selectedLanguage, selectedLanguage == 'zh' ? 'CN' : null);
+                      .setLocale(selectedLanguage);
                 }
                 if (context.mounted) {
                   Navigator.pop(context);

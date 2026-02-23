@@ -1,0 +1,211 @@
+{
+  "@@locale": "zh_TW",
+  "appTitle": "終極清理",
+  "navScan": "掃描",
+  "navWhitelist": "白名單",
+  "navSettings": "設定",
+  "scanTitle": "掃描",
+  "scanStart": "開始掃描",
+  "scanStop": "停止掃描",
+  "scanProgress": "已掃描 {count} 個檔案",
+  "@scanProgress": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "scanFound": "發現 {count} 個非白名單項",
+  "@scanFound": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "scanCurrentPath": "正在掃描: {path}",
+  "@scanCurrentPath": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "scanComplete": "掃描完成",
+  "scanNoRoots": "未設定掃描根目錄。請在設定中新增。",
+  "scanResultsEmpty": "未發現非白名單項。",
+  "scanRefresh": "重新整理",
+  "resultsTitle": "掃描結果",
+  "resultsSelectAll": "全選",
+  "resultsDeselectAll": "取消全選",
+  "resultsDeleteSelected": "刪除選取 ({count})",
+  "@resultsDeleteSelected": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "resultsAddToWhitelist": "新增到白名單",
+  "resultsSortBySize": "按大小排序",
+  "resultsSortByTime": "按時間排序",
+  "resultsSortByPath": "按路徑排序",
+  "resultsFilterByType": "按類型篩選",
+  "whitelistTitle": "白名單",
+  "whitelistAddItem": "新增項目",
+  "whitelistAddGroup": "新增分組",
+  "whitelistSearch": "搜尋白名單...",
+  "whitelistEmpty": "暫無白名單項。",
+  "whitelistItemCount": "{count} 個項目",
+  "@whitelistItemCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "whitelistMoveToGroup": "移動到分組",
+  "whitelistUngrouped": "未分組",
+  "settingsTitle": "設定",
+  "settingsScanRoots": "掃描根目錄",
+  "settingsAddScanRoot": "新增掃描根目錄",
+  "settingsExport": "匯出白名單",
+  "settingsImport": "匯入白名單",
+  "settingsLanguage": "語言",
+  "settingsClearData": "清除所有資料",
+  "settingsAbout": "關於",
+  "settingsVersion": "版本 {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {"type": "String"}
+    }
+  },
+  "dialogConfirmDelete": "確定要刪除嗎？",
+  "dialogConfirmDeleteBatch": "刪除 {count} 個項目？將釋放 {size} 空間。",
+  "@dialogConfirmDeleteBatch": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "size": {"type": "String"}
+    }
+  },
+  "dialogConfirmClearData": "這將刪除所有資料。此操作無法復原。",
+  "dialogCancel": "取消",
+  "dialogConfirm": "確認",
+  "dialogDelete": "刪除",
+  "dialogSave": "儲存",
+  "fieldPath": "路徑",
+  "fieldName": "名稱（選填）",
+  "fieldNote": "備註（選填）",
+  "fieldGroupName": "分組名稱",
+  "fieldGroupNote": "分組備註（選填）",
+  "errorPathEmpty": "路徑不能為空",
+  "errorPathDuplicate": "此路徑已在白名單中",
+  "errorGroupNameEmpty": "分組名稱不能為空",
+  "errorExportFailed": "匯出失敗: {error}",
+  "@errorExportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "errorImportFailed": "匯入失敗: {error}",
+  "@errorImportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "successExport": "白名單匯出成功",
+  "successImport": "白名單匯入成功",
+  "successDelete": "已刪除 {count} 個項目，釋放 {size}",
+  "@successDelete": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "size": {"type": "String"}
+    }
+  },
+  "permissionStorageTitle": "需要儲存權限",
+  "permissionStorageMessage": "終極清理需要完整的儲存存取權限來掃描和管理檔案。",
+  "permissionStorageButton": "授予權限",
+  "deleteGroupTitle": "刪除分組",
+  "deleteGroupNonEmpty": "此分組包含項目。請選擇操作：",
+  "deleteGroupAndChildren": "刪除分組及所有項目",
+  "deleteGroupMoveChildren": "將項目移至上級分組",
+  "whitelistNoItems": "暫無白名單項",
+  "whitelistNoItemsSubtitle": "新增項目以保護它們不被刪除",
+  "whitelistEdit": "編輯",
+  "whitelistDelete": "刪除",
+  "whitelistIsDirectory": "是目錄",
+  "whitelistEditItem": "編輯項目",
+  "whitelistPathRequired": "路徑 *",
+  "whitelistNameOptional": "名稱（選填）",
+  "whitelistNoteOptional": "備註（選填）",
+  "whitelistGroupNameRequired": "名稱 *",
+  "whitelistNoGroup": "無分組",
+  "whitelistErrorLoadGroups": "載入分組失敗",
+  "whitelistErrorNameEmpty": "名稱不能為空",
+  "whitelistErrorPathExists": "路徑已存在於白名單中",
+  "whitelistAddToWhitelist": "新增到白名單",
+  "whitelistDescription": "描述（選填）",
+  "whitelistGroup": "分組",
+  "settingsScanRootDirectories": "掃描根目錄",
+  "settingsDeleteScanRoot": "刪除掃描根目錄",
+  "settingsDeleteScanRootConfirm": "從掃描根目錄中移除 \"{path}\"？",
+  "@settingsDeleteScanRootConfirm": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "settingsRemovedPath": "已移除 {path}",
+  "@settingsRemovedPath": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "settingsEnabled": "已啟用",
+  "settingsDisabled": "已停用",
+  "settingsWhitelistManagement": "白名單管理",
+  "settingsExportWhitelist": "匯出白名單",
+  "settingsExportSubtitle": "儲存白名單到檔案",
+  "settingsImportWhitelist": "匯入白名單",
+  "settingsImportSubtitle": "從檔案載入白名單",
+  "settingsPreferences": "偏好設定",
+  "settingsDangerZone": "危險區域",
+  "settingsClearAllData": "清除所有資料",
+  "settingsClearAllDataSubtitle": "刪除所有白名單項和設定",
+  "settingsAboutApp": "終極清理",
+  "settingsVersionNumber": "版本 1.0.0",
+  "settingsAboutDescription": "一個白名單驅動的檔案管理工具，讓進階使用者完全掌控他們的系統。",
+  "settingsLanguageSystem": "跟隨系統",
+  "settingsLanguageEnglish": "English",
+  "settingsLanguageChinese": "簡體中文",
+  "settingsSelectLanguage": "選擇語言",
+  "settingsOk": "確定",
+  "settingsClearDataConfirm": "這將刪除所有白名單項、分組和設定。此操作無法復原。",
+  "settingsDeleteAll": "全部刪除",
+  "settingsAddScanRootTitle": "新增掃描根目錄",
+  "settingsDirectoryPath": "目錄路徑",
+  "settingsDirectoryPathHint": "/path/to/directory",
+  "settingsAddedScanRoot": "已新增掃描根目錄: {path}",
+  "@settingsAddedScanRoot": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "settingsExportSuccess": "白名單匯出成功",
+  "settingsExportFailed": "匯出失敗: {error}",
+  "@settingsExportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "settingsImportSuccess": "白名單匯入成功",
+  "settingsImportFailed": "匯入失敗: {error}",
+  "@settingsImportFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "settingsAllDataCleared": "所有資料已清除",
+  "settingsClearFailed": "清除失敗: {error}",
+  "@settingsClearFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "deleteGroupConfirm": "刪除分組 \"{name}\" 及其所有項目？",
+  "@deleteGroupConfirm": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "settingsLanguageTraditionalChinese": "繁體中文"
+}

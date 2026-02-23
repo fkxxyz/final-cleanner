@@ -47,15 +47,8 @@ class GroupService {
   Future<void> moveGroup(int groupId, {required int newParentId}) =>
       _repo.moveGroup(groupId, newParentId: newParentId);
 
-  Future<void> addItemToGroup(int itemId, int groupId) =>
-      _repo.addItemToGroup(itemId, groupId);
-
-  Future<void> removeItemFromGroup(int itemId, int groupId) =>
-      _repo.removeItemFromGroup(itemId, groupId);
-
   Future<List<WhitelistItem>> getItemsInGroup(int groupId) =>
       _repo.getItemsInGroup(groupId);
 
-  Future<List<Group>> getGroupsForItem(int itemId) =>
-      _repo.getGroupsForItem(itemId);
+  Future<Group?> getGroupForItem(int itemId) => _repo.getGroupForItem(itemId);
 }

@@ -66,9 +66,9 @@ class GroupRepository {
         _db.groupClosure,
       )..where((t) => t.ancestor.equals(id) | t.descendant.equals(id))).go();
 
-      await (_db.delete(
-        _db.itemGroupRelations,
-      )..where((t) => t.groupId.equals(id))).go();
+      // Update whitelist items to remove group association
+      await (_db.update(_db.whitelistItems)..where((t) => t.groupId.equals(id)))
+          .write(const WhitelistItemsCompanion(groupId: Value(null)));
 
       await (_db.delete(_db.groups)..where((t) => t.id.equals(id))).go();
     });
@@ -94,9 +94,10 @@ class GroupRepository {
           ))
           .go();
 
-      await (_db.delete(
-        _db.itemGroupRelations,
-      )..where((t) => t.groupId.isIn(descendantIds))).go();
+      // Update whitelist items to remove group associations
+      await (_db.update(_db.whitelistItems)
+            ..where((t) => t.groupId.isIn(descendantIds)))
+          .write(const WhitelistItemsCompanion(groupId: Value(null)));
 
       await (_db.delete(
         _db.groups,
@@ -220,42 +221,19 @@ class GroupRepository {
     });
   }
 
-  Future<void> addItemToGroup(int itemId, int groupId) async {
-    await _db
-        .into(_db.itemGroupRelations)
-        .insert(
-          ItemGroupRelationsCompanion.insert(itemId: itemId, groupId: groupId),
-          mode: InsertMode.insertOrIgnore,
-        );
-  }
-
-  Future<void> removeItemFromGroup(int itemId, int groupId) async {
-    await (_db.delete(
-      _db.itemGroupRelations,
-    )..where((t) => t.itemId.equals(itemId) & t.groupId.equals(groupId))).go();
-  }
-
   Future<List<WhitelistItem>> getItemsInGroup(int groupId) async {
-    final itemIds = await (_db.select(
-      _db.itemGroupRelations,
-    )..where((t) => t.groupId.equals(groupId))).map((row) => row.itemId).get();
-
-    if (itemIds.isEmpty) return [];
-
     return await (_db.select(
       _db.whitelistItems,
-    )..where((t) => t.id.isIn(itemIds))).get();
+    )..where((t) => t.groupId.equals(groupId))).get();
   }
 
-  Future<List<Group>> getGroupsForItem(int itemId) async {
-    final groupIds = await (_db.select(
-      _db.itemGroupRelations,
-    )..where((t) => t.itemId.equals(itemId))).map((row) => row.groupId).get();
+  Future<Group?> getGroupForItem(int itemId) async {
+    final item = await (_db.select(
+      _db.whitelistItems,
+    )..where((t) => t.id.equals(itemId))).getSingleOrNull();
 
-    if (groupIds.isEmpty) return [];
+    if (item == null || item.groupId == null) return null;
 
-    return await (_db.select(
-      _db.groups,
-    )..where((t) => t.id.isIn(groupIds))).get();
+    return await getGroupById(item.groupId!);
   }
 }

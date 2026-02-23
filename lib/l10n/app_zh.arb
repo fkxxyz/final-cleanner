@@ -213,5 +213,10 @@
   "settingsImportReplace": "替换",
   "settingsImportReplaceSubtitle": "删除现有数据并导入",
   "settingsImportMerge": "合并",
-  "settingsImportMergeSubtitle": "保留现有数据并添加导入项"
+  "settingsImportMergeSubtitle": "保留现有数据并添加导入项",
+  "disclaimerTitle": "警告",
+  "disclaimerBody": "本工具专为完全理解文件系统管理的高级用户设计。\n\n• 本应用可能会永久删除文件且无法恢复\n• 使用不当可能导致关键系统文件丢失\n• 使用本软件即表示您接受所有风险和责任\n• 开发者和贡献者不对任何数据丢失或损坏负责\n\n如果您对这些风险感到不适，请勿使用本工具。",
+  "disclaimerAgree": "我理解并同意",
+  "disclaimerDecline": "拒绝",
+  "disclaimerDeclineAlert": "使用本应用需要您理解并接受相关风险。"
 }

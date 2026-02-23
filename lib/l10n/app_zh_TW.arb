@@ -207,5 +207,10 @@
       "name": {"type": "String"}
     }
   },
-  "settingsLanguageTraditionalChinese": "繁體中文"
+  "settingsLanguageTraditionalChinese": "繁體中文",
+  "disclaimerTitle": "警告",
+  "disclaimerBody": "本工具專為完全理解檔案系統管理的進階使用者設計。\n\n• 本應用可能會永久刪除檔案且無法復原\n• 使用不當可能導致關鍵系統檔案遺失\n• 使用本軟體即表示您接受所有風險和責任\n• 開發者和貢獻者不對任何資料遺失或損壞負責\n\n如果您對這些風險感到不適，請勿使用本工具。",
+  "disclaimerAgree": "我理解並同意",
+  "disclaimerDecline": "拒絕",
+  "disclaimerDeclineAlert": "使用本應用需要您理解並接受相關風險。"
 }

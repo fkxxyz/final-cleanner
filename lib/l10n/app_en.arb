@@ -213,5 +213,10 @@
   "settingsImportReplace": "Replace",
   "settingsImportReplaceSubtitle": "Delete existing data and import",
   "settingsImportMerge": "Merge",
-  "settingsImportMergeSubtitle": "Keep existing data and add imported items"
+  "settingsImportMergeSubtitle": "Keep existing data and add imported items",
+  "disclaimerTitle": "Warning",
+  "disclaimerBody": "This tool is designed for advanced users who fully understand filesystem management.\n\n• This application can permanently delete files without recovery\n• Improper use may result in critical system file loss\n• By using this software, you accept all risks and responsibilities\n• The developers and contributors are not liable for any data loss or damage\n\nIf you are not comfortable with these risks, do not use this tool.",
+  "disclaimerAgree": "I Understand and Agree",
+  "disclaimerDecline": "Decline",
+  "disclaimerDeclineAlert": "This app requires you to understand and accept the risks to use it."
 }

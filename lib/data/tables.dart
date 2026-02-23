@@ -8,6 +8,7 @@ class WhitelistItems extends Table {
   BoolColumn get isDirectory => boolean().withDefault(const Constant(false))();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
+  IntColumn get groupId => integer().nullable().references(Groups, #id)();
 }
 
 class Groups extends Table {
@@ -28,13 +29,7 @@ class GroupClosure extends Table {
   Set<Column> get primaryKey => {ancestor, descendant};
 }
 
-class ItemGroupRelations extends Table {
-  IntColumn get itemId => integer().references(WhitelistItems, #id)();
-  IntColumn get groupId => integer().references(Groups, #id)();
 
-  @override
-  Set<Column> get primaryKey => {itemId, groupId};
-}
 
 class ScanRoots extends Table {
   IntColumn get id => integer().autoIncrement()();

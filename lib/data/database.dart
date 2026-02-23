@@ -8,7 +8,7 @@ import 'tables.dart';
 part 'database.g.dart';
 
 @DriftDatabase(
-  tables: [WhitelistItems, Groups, GroupClosure, ItemGroupRelations, ScanRoots],
+  tables: [WhitelistItems, Groups, GroupClosure, ScanRoots],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);
@@ -18,7 +18,7 @@ class AppDatabase extends _$AppDatabase {
     : super(NativeDatabase.createInBackground(File(path)));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration {
@@ -26,7 +26,13 @@ class AppDatabase extends _$AppDatabase {
       onCreate: (Migrator m) async {
         await m.createAll();
       },
-      onUpgrade: (Migrator m, int from, int to) async {},
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from == 1) {
+          // Add groupId column to whitelist_items
+          await m.addColumn(whitelistItems, whitelistItems.groupId);
+        }
+      },
+
     );
   }
 }

@@ -11,6 +11,7 @@ class WhitelistRepository {
     required bool isDirectory,
     String? name,
     String? note,
+    int? groupId,
   }) async {
     final id = await _db
         .into(_db.whitelistItems)
@@ -20,16 +21,18 @@ class WhitelistRepository {
             isDirectory: Value(isDirectory),
             name: Value(name),
             note: Value(note),
+            groupId: Value(groupId),
           ),
         );
     return (await getItemById(id))!;
   }
 
-  Future<WhitelistItem> updateItem(int id, {String? name, String? note}) async {
+  Future<WhitelistItem> updateItem(int id, {String? name, String? note, int? groupId}) async {
     await (_db.update(_db.whitelistItems)..where((t) => t.id.equals(id))).write(
       WhitelistItemsCompanion(
         name: Value(name),
         note: Value(note),
+        groupId: Value(groupId),
         updatedAt: Value(DateTime.now()),
       ),
     );

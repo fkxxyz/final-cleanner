@@ -85,9 +85,10 @@ class FilesystemScanner {
             if (isDir) {
               stack.add(Directory(entityPath));
             }
-          } on FileSystemException {
+          } on FileSystemException catch (e) {
+            // Log permission errors instead of silently skipping
+            print('FileSystemException accessing $entityPath: ${e.message}');
             continue;
-          }
         }
       } on FileSystemException {
         continue;

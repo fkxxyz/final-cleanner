@@ -9,6 +9,7 @@ import '../../providers/providers.dart';
 import '../widgets/tree_node_widget.dart';
 import '../widgets/add_to_whitelist_dialog.dart';
 import '../../l10n/app_localizations.dart';
+import '../../services/permission_service.dart';
 
 class RefreshIntent extends Intent {
   const RefreshIntent();

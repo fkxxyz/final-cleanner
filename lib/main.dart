@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'l10n/app_localizations.dart';
 import 'providers/locale_provider.dart';
 import 'ui/pages/app_shell.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:io';
 
 void main() {
   runApp(const ProviderScope(child: FinalCleannerApp()));

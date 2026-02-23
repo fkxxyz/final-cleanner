@@ -21,15 +21,21 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
     return scanRootsAsync.when(
       loading: () => Scaffold(
-        appBar: AppBar(title: const Text('Settings')),
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.settingsTitle),
+        ),
         body: const Center(child: CircularProgressIndicator()),
       ),
       error: (error, stack) => Scaffold(
-        appBar: AppBar(title: const Text('Settings')),
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.settingsTitle),
+        ),
         body: Center(child: Text('Error: $error')),
       ),
       data: (scanRoots) => Scaffold(
-        appBar: AppBar(title: const Text('Settings')),
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.settingsTitle),
+        ),
         body: ListView(
           children: [
             _buildScanRootsSection(context, scanRoots),
@@ -57,7 +63,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'Scan Root Directories',
+            AppLocalizations.of(context)!.settingsScanRootDirectories,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -77,19 +83,25 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               return await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('Delete Scan Root'),
-                  content: Text('Remove "${root.path}" from scan roots?'),
+                  title: Text(
+                    AppLocalizations.of(context)!.settingsDeleteScanRoot,
+                  ),
+                  content: Text(
+                    AppLocalizations.of(
+                      context,
+                    )!.settingsDeleteScanRootConfirm(root.path),
+                  ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: const Text('Cancel'),
+                      child: Text(AppLocalizations.of(context)!.dialogCancel),
                     ),
                     FilledButton(
                       onPressed: () => Navigator.pop(context, true),
                       style: FilledButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.error,
                       ),
-                      child: const Text('Delete'),
+                      child: Text(AppLocalizations.of(context)!.dialogDelete),
                     ),
                   ],
                 ),
@@ -98,14 +110,24 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             onDismissed: (direction) async {
               await ref.read(scanRootServiceProvider).deleteScanRoot(root.id);
               if (mounted) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text('Removed ${root.path}')));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      AppLocalizations.of(
+                        context,
+                      )!.settingsRemovedPath(root.path),
+                    ),
+                  ),
+                );
               }
             },
             child: SwitchListTile(
               title: Text(root.path),
-              subtitle: Text(root.enabled ? 'Enabled' : 'Disabled'),
+              subtitle: Text(
+                root.enabled
+                    ? AppLocalizations.of(context)!.settingsEnabled
+                    : AppLocalizations.of(context)!.settingsDisabled,
+              ),
               value: root.enabled,
               onChanged: (value) {
                 ref
@@ -120,7 +142,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           child: FilledButton.tonalIcon(
             onPressed: () => _showAddScanRootDialog(context),
             icon: const Icon(Icons.add),
-            label: const Text('Add Scan Root'),
+            label: Text(AppLocalizations.of(context)!.settingsAddScanRoot),
           ),
         ),
       ],
@@ -134,7 +156,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'Whitelist Management',
+            AppLocalizations.of(context)!.settingsWhitelistManagement,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -142,15 +164,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         ),
         ListTile(
           leading: const Icon(Icons.upload_file),
-          title: const Text('Export Whitelist'),
-          subtitle: const Text('Save whitelist to file'),
+          title: Text(AppLocalizations.of(context)!.settingsExportWhitelist),
+          subtitle: Text(AppLocalizations.of(context)!.settingsExportSubtitle),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => _exportWhitelist(context),
         ),
         ListTile(
           leading: const Icon(Icons.download),
-          title: const Text('Import Whitelist'),
-          subtitle: const Text('Load whitelist from file'),
+          title: Text(AppLocalizations.of(context)!.settingsImportWhitelist),
+          subtitle: Text(AppLocalizations.of(context)!.settingsImportSubtitle),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => _importWhitelist(context),
         ),
@@ -165,7 +187,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'Preferences',
+            AppLocalizations.of(context)!.settingsPreferences,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -173,7 +195,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         ),
         ListTile(
           leading: const Icon(Icons.language),
-          title: const Text('Language'),
+          title: Text(AppLocalizations.of(context)!.settingsLanguage),
           subtitle: Text(_getLanguageDisplayName(ref)),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => _showLanguageDialog(context),
@@ -189,7 +211,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'Danger Zone',
+            AppLocalizations.of(context)!.settingsDangerZone,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.error,
@@ -202,10 +224,12 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             color: Theme.of(context).colorScheme.error,
           ),
           title: Text(
-            'Clear All Data',
+            AppLocalizations.of(context)!.settingsClearAllData,
             style: TextStyle(color: Theme.of(context).colorScheme.error),
           ),
-          subtitle: const Text('Delete all whitelist items and settings'),
+          subtitle: Text(
+            AppLocalizations.of(context)!.settingsClearAllDataSubtitle,
+          ),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => _showClearDataDialog(context),
         ),
@@ -220,21 +244,21 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'About',
+            AppLocalizations.of(context)!.settingsAbout,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
-        const ListTile(
+        ListTile(
           leading: Icon(Icons.info_outline),
-          title: Text('Final Cleanner'),
-          subtitle: Text('Version 1.0.0'),
+          title: Text(AppLocalizations.of(context)!.settingsAboutApp),
+          subtitle: Text(AppLocalizations.of(context)!.settingsVersionNumber),
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
-            'A whitelist-driven file management tool for power users to maintain complete control over their systems.',
+            AppLocalizations.of(context)!.settingsAboutDescription,
             style: TextStyle(fontSize: 12),
           ),
         ),
@@ -244,14 +268,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   String _getLanguageDisplayName(WidgetRef ref) {
     final locale = ref.watch(localeProvider);
-    if (locale == null) return 'System Default';
+    if (locale == null)
+      return AppLocalizations.of(context)!.settingsLanguageSystem;
     switch (locale.languageCode) {
       case 'en':
-        return 'English';
+        return AppLocalizations.of(context)!.settingsLanguageEnglish;
       case 'zh':
-        return '简体中文';
+        return AppLocalizations.of(context)!.settingsLanguageChinese;
       default:
-        return 'System Default';
+        return AppLocalizations.of(context)!.settingsLanguageSystem;
     }
   }
 
@@ -262,12 +287,14 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: const Text('Select Language'),
+          title: Text(AppLocalizations.of(context)!.settingsSelectLanguage),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               RadioListTile<String>(
-                title: const Text('System Default'),
+                title: Text(
+                  AppLocalizations.of(context)!.settingsLanguageSystem,
+                ),
                 value: 'system',
                 groupValue: selectedLanguage,
                 onChanged: (value) {
@@ -277,7 +304,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 },
               ),
               RadioListTile<String>(
-                title: const Text('English'),
+                title: Text(
+                  AppLocalizations.of(context)!.settingsLanguageEnglish,
+                ),
                 value: 'en',
                 groupValue: selectedLanguage,
                 onChanged: (value) {
@@ -287,7 +316,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 },
               ),
               RadioListTile<String>(
-                title: const Text('简体中文'),
+                title: Text(
+                  AppLocalizations.of(context)!.settingsLanguageChinese,
+                ),
                 value: 'zh',
                 groupValue: selectedLanguage,
                 onChanged: (value) {
@@ -301,7 +332,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(AppLocalizations.of(context)!.dialogCancel),
             ),
             FilledButton(
               onPressed: () async {
@@ -316,7 +347,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   Navigator.pop(context);
                 }
               },
-              child: const Text('OK'),
+              child: Text(AppLocalizations.of(context)!.settingsOk),
             ),
           ],
         ),
@@ -328,21 +359,19 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Clear All Data'),
-        content: const Text(
-          'This will delete all whitelist items, groups, and settings. This action cannot be undone.',
-        ),
+        title: Text(AppLocalizations.of(context)!.settingsClearAllData),
+        content: Text(AppLocalizations.of(context)!.settingsClearDataConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.dialogCancel),
           ),
           FilledButton(
             onPressed: () => _clearAllData(context),
             style: FilledButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: const Text('Delete All'),
+            child: Text(AppLocalizations.of(context)!.settingsDeleteAll),
           ),
         ],
       ),
@@ -354,18 +383,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add Scan Root'),
+        title: Text(AppLocalizations.of(context)!.settingsAddScanRootTitle),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(
-            labelText: 'Directory Path',
-            hintText: '/path/to/directory',
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context)!.settingsDirectoryPath,
+            hintText: AppLocalizations.of(context)!.settingsDirectoryPathHint,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.dialogCancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -376,7 +405,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 await ref.read(scanRootServiceProvider).addScanRoot(path);
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Added scan root: $path')),
+                    SnackBar(
+                      content: Text(
+                        AppLocalizations.of(
+                          context,
+                        )!.settingsAddedScanRoot(path),
+                      ),
+                    ),
                   );
                 }
               } on ArgumentError catch (e) {
@@ -390,7 +425,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 }
               }
             },
-            child: const Text('Add'),
+            child: Text(AppLocalizations.of(context)!.whitelistAddItem),
           ),
         ],
       ),
@@ -407,7 +442,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         await ref.read(exportImportServiceProvider).exportToFile(result);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Whitelist exported successfully')),
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.settingsExportSuccess,
+              ),
+            ),
           );
         }
       }
@@ -415,7 +454,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Export failed: $e'),
+            content: Text(
+              AppLocalizations.of(context)!.settingsExportFailed(e.toString()),
+            ),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -435,7 +476,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             .importFromFile(result.files.single.path!);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Whitelist imported successfully')),
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.settingsImportSuccess,
+              ),
+            ),
           );
         }
       }
@@ -443,7 +488,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Import failed: $e'),
+            content: Text(
+              AppLocalizations.of(context)!.settingsImportFailed(e.toString()),
+            ),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -469,15 +516,19 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         await ref.read(groupServiceProvider).deleteGroupAndChildren(group.id);
       }
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('All data cleared')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.settingsAllDataCleared),
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Clear failed: $e'),
+            content: Text(
+              AppLocalizations.of(context)!.settingsClearFailed(e.toString()),
+            ),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );

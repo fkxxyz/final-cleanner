@@ -6,23 +6,23 @@ import '../../models/folder_node.dart';
 class TreeNodeWidget extends StatefulWidget {
   final FolderNode? folder;
   final FileNode? file;
-  final bool isSelected;
+  final Map<String, bool> selectedPaths;
+  final Map<String, DirectoryNode> expandedDirectories;
   final Function(String path, bool selected) onSelectionChanged;
   final Function(String path) onAddToWhitelist;
   final Function(String path) onExpand;
   final int depth;
-  final DirectoryNode? directoryContent;
 
   const TreeNodeWidget({
     super.key,
     this.folder,
     this.file,
-    required this.isSelected,
+    required this.selectedPaths,
+    required this.expandedDirectories,
     required this.onSelectionChanged,
     required this.onAddToWhitelist,
     required this.onExpand,
     this.depth = 0,
-    this.directoryContent,
   }) : assert(folder != null || file != null);
 
   @override
@@ -54,7 +54,7 @@ class _TreeNodeWidgetState extends State<TreeNodeWidget> {
     });
 
     // Trigger expansion callback if expanding for the first time
-    if (_isExpanded && widget.directoryContent == null) {
+    if (_isExpanded && widget.expandedDirectories[_path] == null) {
       widget.onExpand(_path);
     }
   }
@@ -77,7 +77,7 @@ class _TreeNodeWidgetState extends State<TreeNodeWidget> {
               children: [
                 // Checkbox
                 Checkbox(
-                  value: widget.isSelected,
+                  value: widget.selectedPaths[_path] ?? false,
                   onChanged: (value) {
                     widget.onSelectionChanged(_path, value ?? false);
                   },
@@ -141,8 +141,8 @@ class _TreeNodeWidgetState extends State<TreeNodeWidget> {
         ),
         
         // Children (only for expanded folders)
-        if (_isFolder && _isExpanded && widget.directoryContent != null)
-          ..._buildChildren(widget.directoryContent!),
+        if (_isFolder && _isExpanded && widget.expandedDirectories[_path] != null)
+          ..._buildChildren(widget.expandedDirectories[_path]!),
       ],
     );
   }
@@ -155,7 +155,8 @@ class _TreeNodeWidgetState extends State<TreeNodeWidget> {
       children.add(
         TreeNodeWidget(
           folder: folder,
-          isSelected: widget.isSelected, // Inherit selection state
+          selectedPaths: widget.selectedPaths,
+          expandedDirectories: widget.expandedDirectories,
           onSelectionChanged: widget.onSelectionChanged,
           onAddToWhitelist: widget.onAddToWhitelist,
           onExpand: widget.onExpand,
@@ -169,7 +170,8 @@ class _TreeNodeWidgetState extends State<TreeNodeWidget> {
       children.add(
         TreeNodeWidget(
           file: file,
-          isSelected: widget.isSelected, // Inherit selection state
+          selectedPaths: widget.selectedPaths,
+          expandedDirectories: widget.expandedDirectories,
           onSelectionChanged: widget.onSelectionChanged,
           onAddToWhitelist: widget.onAddToWhitelist,
           onExpand: widget.onExpand,

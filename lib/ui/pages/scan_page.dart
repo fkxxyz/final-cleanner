@@ -279,7 +279,8 @@ class _ScanPageState extends ConsumerState<ScanPage> {
             ...root.files.map(
               (file) => TreeNodeWidget(
                 file: file,
-                isSelected: _selectedPaths[file.path] ?? false,
+                selectedPaths: _selectedPaths,
+                expandedDirectories: _expandedDirectories,
                 onSelectionChanged: _handleSelection,
                 onAddToWhitelist: _handleAddToWhitelist,
                 onExpand: _expandDirectory,
@@ -290,12 +291,12 @@ class _ScanPageState extends ConsumerState<ScanPage> {
             ...root.folders.map(
               (folder) => TreeNodeWidget(
                 folder: folder,
-                isSelected: _selectedPaths[folder.path] ?? false,
+                selectedPaths: _selectedPaths,
+                expandedDirectories: _expandedDirectories,
                 onSelectionChanged: _handleSelection,
                 onAddToWhitelist: _handleAddToWhitelist,
                 onExpand: _expandDirectory,
                 depth: 0,
-                directoryContent: _expandedDirectories[folder.path],
               ),
             ),
           ],
